@@ -8,7 +8,7 @@ public class EmployeeService {
 	
     // Get all employees
     public List<Employee> getAllEmployees() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory();
         List<Employee> employees = session.createQuery("FROM Employee", Employee.class).list();
         session.close();
         return employees;
@@ -16,7 +16,7 @@ public class EmployeeService {
 
     // Save or update an employee
     public void saveOrUpdateEmployee(Employee employee) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory();
         Transaction transaction = session.beginTransaction();
         session.saveOrUpdate(employee);
         transaction.commit();
@@ -25,7 +25,7 @@ public class EmployeeService {
 
     // Delete an employee by ID
     public void deleteEmployee(int employeeID) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory();
         Transaction transaction = session.beginTransaction();
         Employee employee = session.get(Employee.class, employeeID);
         if (employee != null) {
@@ -37,7 +37,7 @@ public class EmployeeService {
 
     // Find an employee by ID
     public Employee findEmployeeById(int employeeID) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory();
         Employee employee = session.get(Employee.class, employeeID);
         session.close();
         return employee;
@@ -45,7 +45,7 @@ public class EmployeeService {
 
     // Get employees by department name
     public List<Employee> getEmployeesByDepartmentName(String departmentName) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory();
         List<Employee> employees = session.createQuery("FROM Employee e WHERE e.departmentID = " +
             "(SELECT d.departmentID FROM Department d WHERE d.departmentName = :deptName)", Employee.class)
             .setParameter("deptName", departmentName)
@@ -56,7 +56,7 @@ public class EmployeeService {
 
     // Search employees by name
     public List<Employee> searchEmployeesByName(String name) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory();
         List<Employee> employees = session.createQuery("FROM Employee e WHERE e.name LIKE :name", Employee.class)
             .setParameter("name", "%" + name + "%")
             .list();

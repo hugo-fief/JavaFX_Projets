@@ -18,7 +18,7 @@ public class AdminService {
             throw new IllegalArgumentException("Username or password is invalid.");
         }
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory();
         Transaction transaction = null;
         Admin admin = null;
 
