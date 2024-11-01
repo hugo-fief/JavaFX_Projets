@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import de.jensd.fx.glyphs.fontawesome.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="techcompany.DashBoardcontroller">
+   <children>
+      <AnchorPane fx:id="main_form" prefHeight="600.0" prefWidth="1100.0">
+         <children>
+            <!-- Updated BorderPane and Header Layout -->
+            <BorderPane prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <top>
+                  <AnchorPane prefHeight="45.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <FontAwesomeIcon glyphName="BUILDING" layoutX="14.0" layoutY="31.0" size="2em" />
+                        <Label layoutX="42.0" layoutY="11.0" text="Employee Management System">
+                           <font>
+                              <Font name="Calibri Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="close" layoutX="1054.0" layoutY="10.0" mnemonicParsing="false" onAction="#close" styleClass="close" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="CLOSE" size="1.5em" styleClass="closeicon" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="minimize" layoutX="1026.0" layoutY="4.0" mnemonicParsing="false" onAction="#minimize" styleClass="minim" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="4.0">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="MINUS" size="1.5em" styleClass="minimicon" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </top>
+
+               <!-- Left Pane for Navigation -->
+               <left>
+                  <AnchorPane prefWidth="200.0" styleClass="nav-form">
+                     <children>
+                        <FontAwesomeIcon glyphName="USER" layoutX="62.0" layoutY="96.0" size="8em" />
+                        <Label layoutX="44.0" layoutY="107.0" text="Logged in As" textFill="WHITE">
+                           <font>
+                              <Font name="Impact" size="22.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="username" layoutX="40.0" layoutY="136.0" text="admin" textFill="WHITE">
+                           <font>
+                              <Font name="Impact" size="20.0" />
+                           </font>
+                        </Label>
+                        <!-- Home Button -->
+                        <Button fx:id="home_btn" layoutX="10.0" layoutY="189.0" onAction="#switchForm" text=" Home">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="HOME" size="1.5em" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="nav-btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                        </Button>
+                        <!-- Additional Buttons as Required -->
+                        <Button fx:id="addEmployee_btn" layoutX="10.0" layoutY="242.0" onAction="#switchForm" text=" Manage Employees">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="USERS" size="1.5em" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="nav-btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                        </Button>
+                        <!-- Logout Button -->
+                        <Button fx:id="logout" layoutY="516.0" onAction="#logout" text="Log Out" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
+                           <graphic>
+                              <FontAwesomeIcon glyphName="SIGN_OUT" size="1.5em" />
+                           </graphic>
+                           <styleClass>
+                              <String fx:value="nav-btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </left>
+
+               <!-- Center Pane for Employee and User Management Forms -->
+               <center>
+                  <AnchorPane>
+                     <children>
+                        <AnchorPane fx:id="home_form" visible="true">
+                           <!-- Home Form Contents -->
+                        </AnchorPane>
+                        <AnchorPane fx:id="addEmployee_form" visible="false">
+                           <!-- Add Employee Form Contents -->
+                        </AnchorPane>
+                        <AnchorPane fx:id="addUser_form" visible="false">
+                           <!-- Add User Form Contents -->
+                        </AnchorPane>
+                        <AnchorPane fx:id="depDesig_form" visible="false">
+                           <!-- Department/Designation Form Contents -->
+                        </AnchorPane>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

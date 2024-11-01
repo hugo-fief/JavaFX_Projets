@@ -11,7 +11,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-public class DashboardController {
+public class DashBoardController {
 
     private EmployeeService employeeService = new EmployeeService();
     private ObservableList<Employee> employeeList;

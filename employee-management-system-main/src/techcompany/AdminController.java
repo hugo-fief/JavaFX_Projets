@@ -45,17 +45,17 @@ public class AdminController implements Initializable {
 
             showAlert(Alert.AlertType.INFORMATION, "Information Message", "Successfully logged in");
 
-            loadDashboard();
+            loadDashBoard();
         } else {
             showAlert(Alert.AlertType.ERROR, "Error Message", "Invalid Username or Password");
         }
     }
 
-    private void loadDashboard() {
+    private void loadDashBoard() {
         try {
             loginBtn.getScene().getWindow().hide();
 
-            Parent root = FXMLLoader.load(getClass().getResource("dashboard.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("DashBoardView.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root);
 
