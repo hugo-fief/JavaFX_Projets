@@ -1,14 +1,16 @@
 package techcompany;
 
+import com.techcompany.model.Admin;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-
+/**
+ * Service class for Admin-related operations.
+ */
 public class AdminService {
 
-    // Méthode pour valider l'entrée utilisateur (peut être adaptée selon les besoins)
     private boolean isValid(String input) {
         return input != null && !input.trim().isEmpty();
     }
@@ -18,13 +20,11 @@ public class AdminService {
             throw new IllegalArgumentException("Username or password is invalid.");
         }
 
-        Session session = HibernateUtil.getInstance().getSessionFactory();
         Transaction transaction = null;
         Admin admin = null;
 
-        try {
+        try (Session session = HibernateUtil.getInstance().getSession()) {
             transaction = session.beginTransaction();
-            // Utilisation de paramètres pour éviter l'injection SQL
             admin = session.createQuery("FROM Admin WHERE username = :username AND password = :password", Admin.class)
                     .setParameter("username", username)
                     .setParameter("password", password)
@@ -33,11 +33,8 @@ public class AdminService {
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             e.printStackTrace();
-        } finally {
-            session.close();
         }
 
         return admin;
     }
 }
-

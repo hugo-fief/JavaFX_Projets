@@ -1,5 +1,6 @@
 package techcompany;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -16,7 +17,6 @@ public class HibernateUtil {
      */
     private HibernateUtil() {
         try {
-            // Load the configuration from hibernate.cfg.xml
             sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("SessionFactory creation failed: " + ex.getMessage());
@@ -37,12 +37,12 @@ public class HibernateUtil {
     }
 
     /**
-     * Returns the Hibernate SessionFactory.
-     *
-     * @return SessionFactory instance
+     * Returns a new Hibernate session.
+     * 
+     * @return Hibernate Session
      */
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
+    public Session getSession() {
+        return sessionFactory.openSession();
     }
 
     /**
