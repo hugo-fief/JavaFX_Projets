@@ -5,6 +5,7 @@ import org.hibernate.Transaction;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
+
 public class AdminService {
 
     // Méthode pour valider l'entrée utilisateur (peut être adaptée selon les besoins)
