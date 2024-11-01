@@ -1,18 +1,20 @@
 package techcompany;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "admin")
 public class Admin {
-    @Id
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private String username;
     private String password;
     private String role;
 
-    // Getters et setters
     public String getUsername() {
         return username;
     }
