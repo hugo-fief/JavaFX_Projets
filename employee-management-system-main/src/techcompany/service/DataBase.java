@@ -1,4 +1,4 @@
-package com.techcompany.service;
+package techcompany;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

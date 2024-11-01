@@ -1,4 +1,4 @@
-package com.techcompany;
+package techcompany;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
