@@ -63,8 +63,8 @@ public class PythonExecutor extends Application {
 
     // Charger le chemin de l'interpreteur Python
     private static String loadPythonCommand(Properties properties) {
-        // Charger le chemin de l'executable Python defini dans config.properties
-        // Valeur par defaut "python3" si non specifiee
+        // Charger le chemin de l'executable Python du venv defini dans config.properties
+        // Valeur par defaut "python3" si venv non specifiee
         return properties.getProperty("python.command", "python3");
     }
 
