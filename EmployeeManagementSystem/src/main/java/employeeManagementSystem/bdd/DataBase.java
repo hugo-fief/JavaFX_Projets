@@ -1,4 +1,4 @@
-package employee.management.bdd;
+package employeeManagementSystem.bdd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

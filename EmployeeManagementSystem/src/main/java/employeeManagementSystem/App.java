@@ -1,4 +1,4 @@
-package employee.management;
+package employeeManagementSystem;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +20,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("employee/management/view/LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/employeeManagementSystem/view/LoginView.fxml"));
 
         Scene scene = new Scene(root);
         setupWindowDragging(stage, root);

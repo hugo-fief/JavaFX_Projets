@@ -1,4 +1,4 @@
-package employee.management.service;
+package employeeManagementSystem.service;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -6,9 +6,9 @@ import org.hibernate.Transaction;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import employee.management.bdd.HibernateUtil;
-import employee.management.bdd.SessionData;
-import employee.management.model.Admin;
+import employeeManagementSystem.bdd.HibernateUtil;
+import employeeManagementSystem.bdd.SessionData;
+import employeeManagementSystem.model.Admin;
 
 public class AdminService {
 

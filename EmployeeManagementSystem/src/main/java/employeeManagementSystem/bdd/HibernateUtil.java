@@ -1,4 +1,4 @@
-package employee.management.bdd;
+package employeeManagementSystem.bdd;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

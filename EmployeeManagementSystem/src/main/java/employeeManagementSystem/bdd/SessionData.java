@@ -1,4 +1,4 @@
-package employee.management.bdd;
+package employeeManagementSystem.bdd;
 
 /**
  * Singleton class for managing user session data (e.g., username and role).

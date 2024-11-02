@@ -1,4 +1,4 @@
-package employee.management.controller;
+package employeeManagementSystem.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,8 +16,8 @@ import javafx.stage.StageStyle;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import employee.management.model.Admin;
-import employee.management.service.AdminService;
+import employeeManagementSystem.model.Admin;
+import employeeManagementSystem.service.AdminService;
 
 public class AdminController implements Initializable {
 
@@ -52,6 +52,15 @@ public class AdminController implements Initializable {
         } else {
             showAlert(Alert.AlertType.ERROR, "Error Message", "Invalid Username or Password");
         }
+    }
+    
+    /**
+     * Closes the current window.
+    */
+    @FXML
+    private void close() {
+        Stage stage = (Stage) loginBtn.getScene().getWindow();
+        stage.close();
     }
 
     /**

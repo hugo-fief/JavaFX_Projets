@@ -1,12 +1,12 @@
-package employee.management.service;
+package employeeManagementSystem.service;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.util.List;
 
-import employee.management.bdd.HibernateUtil;
-import employee.management.model.Employee;
+import employeeManagementSystem.bdd.HibernateUtil;
+import employeeManagementSystem.model.Employee;
 
 /**
  * Service class for Employee-related operations.

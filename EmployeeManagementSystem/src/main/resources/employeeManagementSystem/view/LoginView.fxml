@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="techcompany.controller.AdminController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="employeeManagementSystem.controller.AdminController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="400.0" prefWidth="600.0">
          <children>
             <!-- Left Section (Employee Management Title) -->
             <AnchorPane prefHeight="400.0" prefWidth="300.0" styleClass="left-form" stylesheets="@LoginStyle.css">
                <children>
-                  <FontAwesomeIcon fill="WHITE" glyphName="USERS" layoutX="86.0" layoutY="206.0" size="10em" />
                   <Label layoutX="45.0" layoutY="232.0" text="Employee management" textFill="WHITE">
                      <font>
                         <Font name="Impact" size="22.0" />
@@ -43,9 +41,6 @@
                   <Button fx:id="loginBtn" layoutX="90.0" layoutY="265.0" mnemonicParsing="false" onAction="#loginAdmin" prefHeight="30.0" prefWidth="120.0" styleClass="login-btn" stylesheets="@LoginStyle.css" text="Login" />
                   <!-- Close Button -->
                   <Button fx:id="close" layoutX="270.0" layoutY="14.0" mnemonicParsing="false" onAction="#close" prefHeight="10.0" prefWidth="10.0" styleClass="close" stylesheets="@LoginStyle.css" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
-                     <graphic>
-                        <FontAwesomeIcon glyphName="CLOSE" size="1.5em" styleClass="closeicon" />
-                     </graphic>
                   </Button>
                </children>
             </AnchorPane>

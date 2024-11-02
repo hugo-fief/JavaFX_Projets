@@ -1,4 +1,4 @@
-package employee.management.controller;
+package employeeManagementSystem.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,8 +11,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-import employee.management.model.Employee;
-import employee.management.service.EmployeeService;
+import employeeManagementSystem.model.Employee;
+import employeeManagementSystem.service.EmployeeService;
 
 public class DashBoardController {
 
