@@ -4,8 +4,13 @@
 
 - Ce projet a été développé à des fins éducatives pour démontrer JavaFX, l'intégration MySQL et les fonctionnalités CRUD (Créer, Lire, Mettre à jour, Supprimer) de base dans un système de gestion des employés.
 
+## Projet d'Exécution Script Python
 
-## Arborescence du Projet
+- Ce projet a été développé afin de pouvoir exécuter un script python depuis un programme Java, en mettant en place des
+bonnes pratiques de Développement, tout en respectant un certains nombres de specifications fonctionnelles, ayant pour but
+d'assurer la protection envers de potentiels failles de sécurités
+
+## Arborescence du Projet de Gestion d'Employés
 
 ```
 employee-management-system-main
@@ -22,6 +27,14 @@ employee-management-system-main
 │   │           └───view
 │   └───test
 │       └───java
+```
+
+## Arborescence du Projet d'Exécution de Script Python
+
+```
+employee-management-system-main
+├───output
+├───venv
 ```
 
 ## Commandes Maven a connaitre
