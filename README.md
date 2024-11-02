@@ -4,7 +4,21 @@
 
 - Ce projet a été développé à des fins éducatives pour démontrer JavaFX, l'intégration MySQL et les fonctionnalités CRUD (Créer, Lire, Mettre à jour, Supprimer) de base dans un système de gestion des employés.
 
----
+
+## Arborescence du Projet
+
+```
+employee-management-system-main
+├───src
+│   └───main
+│       └───java
+│           └───techcompany
+│               ├───bdd
+│               ├───controller
+│               ├───model
+│               ├───service
+│               └───view
+```
 
 ## Commandes Maven a connaitre
 

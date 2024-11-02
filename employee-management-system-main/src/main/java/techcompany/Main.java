@@ -20,7 +20,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/techcompany/view/LoginView.fxml"));
 
         Scene scene = new Scene(root);
         setupWindowDragging(stage, root);
