@@ -27,3 +27,4 @@ employee-management-system-main
 - `mvn test` : Compile le code source & exécute les tests unitaires
 - `mvn exec:java -Dexec.mainClass="com.taskmanager.Main"` : Exécute une classe java spécifique
 - `mvn exec:java -Dexec.mainClass="com.taskmanager.Main" -X` : Exécute une classe java spécifique en utilisant le débogage
+- `mvn archetype:generate -D archetypeArtefactId=maven-archetype-quickstart` : Génère un nouveau projet Maven avec l'archtetype de base
