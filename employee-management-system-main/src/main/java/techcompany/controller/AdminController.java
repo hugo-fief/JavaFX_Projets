@@ -33,8 +33,11 @@ public class AdminController implements Initializable {
     private double x = 0;
     private double y = 0;
 
-    private AdminService adminService = new AdminService();
+    private final AdminService adminService = new AdminService();
 
+    /**
+     * Handles the login action by authenticating the user and loading the dashboard.
+     */
     public void loginAdmin() {
         if (username.getText().isEmpty() || password.getText().isEmpty()) {
             showAlert(Alert.AlertType.ERROR, "Error Message", "Please fill all the blank fields!");
@@ -44,22 +47,21 @@ public class AdminController implements Initializable {
         Admin admin = adminService.login(username.getText(), password.getText());
 
         if (admin != null) {
-            username = admin.getUsername();
-            userRole = admin.getRole();
-
             showAlert(Alert.AlertType.INFORMATION, "Information Message", "Successfully logged in");
-
-            loadDashBoard();
+            loadDashboard();
         } else {
             showAlert(Alert.AlertType.ERROR, "Error Message", "Invalid Username or Password");
         }
     }
 
-    private void loadDashBoard() {
+    /**
+     * Loads the dashboard view after successful login.
+     */
+    private void loadDashboard() {
         try {
             loginBtn.getScene().getWindow().hide();
 
-            Parent root = FXMLLoader.load(getClass().getResource("DashBoardView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/techcompany/view/DashboardView.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root);
 
@@ -81,6 +83,9 @@ public class AdminController implements Initializable {
         }
     }
 
+    /**
+     * Displays an alert with a given type, title, and message.
+     */
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -91,6 +96,6 @@ public class AdminController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Initialisation si nécessaire
+        // Any necessary initialization can be done here
     }
 }
