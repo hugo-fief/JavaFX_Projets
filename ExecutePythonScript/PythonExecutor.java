@@ -7,6 +7,8 @@ import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import java.util.List;
+import java.util.Arrays;
 
 public class PythonExecutor extends Application {
 
@@ -15,6 +17,7 @@ public class PythonExecutor extends Application {
     private static final String REQUIRED_PYTHON_VERSION = "Python 3.11";
     private static final String SCRIPT_PATH_PROPERTY = "python.script.path";
     private static final String ARGUMENTS_PROPERTY = "python.script.arguments";
+    private static final List<String> REQUIRED_LIBRARIES = Arrays.asList("pandas", "matplotlib");
 
     public static void main(String[] args) {
         launch(args);
@@ -30,6 +33,9 @@ public class PythonExecutor extends Application {
             if (!isCorrectPythonVersion()) {
                 throw new ConfigurationException("Version de Python non compatible. Python 3.11 requis.");
             }
+
+            // Vérifier les librairies installées
+            checkPythonLibraries();
 
             // Récupérer le chemin du script et les arguments
             String scriptPath = properties.getProperty(SCRIPT_PATH_PROPERTY);
@@ -57,6 +63,31 @@ public class PythonExecutor extends Application {
         try (BufferedReader versionReader = new BufferedReader(new InputStreamReader(versionProcess.getInputStream()))) {
             String versionOutput = versionReader.readLine();
             return versionOutput != null && versionOutput.contains(REQUIRED_PYTHON_VERSION);
+        }
+    }
+
+    // Vérifier les librairies Python requises
+    private static void checkPythonLibraries() throws IOException, ConfigurationException {
+        ProcessBuilder listLibraries = new ProcessBuilder(PYTHON_COMMAND, "-m", "pip", "list");
+        Process listProcess = listLibraries.start();
+        
+        System.out.println("Librairies Python installées :");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(listProcess.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        }
+
+        for (String library : REQUIRED_LIBRARIES) {
+            ProcessBuilder checkLibrary = new ProcessBuilder(PYTHON_COMMAND, "-m", "pip", "show", library);
+            Process checkProcess = checkLibrary.start();
+            
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(checkProcess.getInputStream()))) {
+                if (reader.lines().noneMatch(l -> l.contains("Name: " + library))) {
+                    throw new ConfigurationException("La librairie Python requise '" + library + "' n'est pas installée.");
+                }
+            }
         }
     }
 
