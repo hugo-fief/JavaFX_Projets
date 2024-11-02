@@ -4,14 +4,13 @@
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="techcompany.controller.DashBoardcontroller">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="employeeManagementSystem.controller.DashBoardController">
    <children>
       <AnchorPane fx:id="main_form" prefHeight="600.0" prefWidth="1100.0">
          <children>
@@ -20,22 +19,13 @@
                <top>
                   <AnchorPane prefHeight="45.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
                      <children>
-                        <FontAwesomeIcon glyphName="BUILDING" layoutX="14.0" layoutY="31.0" size="2em" />
                         <Label layoutX="42.0" layoutY="11.0" text="Employee Management System">
                            <font>
                               <Font name="Calibri Bold" size="18.0" />
                            </font>
                         </Label>
-                        <Button fx:id="close" layoutX="1054.0" layoutY="10.0" mnemonicParsing="false" onAction="#close" styleClass="close" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="CLOSE" size="1.5em" styleClass="closeicon" />
-                           </graphic>
-                        </Button>
-                        <Button fx:id="minimize" layoutX="1026.0" layoutY="4.0" mnemonicParsing="false" onAction="#minimize" styleClass="minim" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="4.0">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="MINUS" size="1.5em" styleClass="minimicon" />
-                           </graphic>
-                        </Button>
+                        <Button fx:id="close" layoutX="1054.0" layoutY="10.0" mnemonicParsing="false" onAction="#close" styleClass="close" AnchorPane.rightAnchor="4.0" AnchorPane.topAnchor="4.0" />
+                        <Button fx:id="minimize" layoutX="1026.0" layoutY="4.0" mnemonicParsing="false" onAction="#minimize" styleClass="minim" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="4.0" />
                      </children>
                   </AnchorPane>
                </top>
@@ -44,7 +34,6 @@
                <left>
                   <AnchorPane prefWidth="200.0" styleClass="nav-form">
                      <children>
-                        <FontAwesomeIcon glyphName="USER" layoutX="62.0" layoutY="96.0" size="8em" />
                         <Label layoutX="44.0" layoutY="107.0" text="Logged in As" textFill="WHITE">
                            <font>
                               <Font name="Impact" size="22.0" />
@@ -57,9 +46,6 @@
                         </Label>
                         <!-- Home Button -->
                         <Button fx:id="home_btn" layoutX="10.0" layoutY="189.0" onAction="#switchForm" text=" Home">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="HOME" size="1.5em" />
-                           </graphic>
                            <styleClass>
                               <String fx:value="nav-btn" />
                               <String fx:value="shadow" />
@@ -67,9 +53,6 @@
                         </Button>
                         <!-- Additional Buttons as Required -->
                         <Button fx:id="addEmployee_btn" layoutX="10.0" layoutY="242.0" onAction="#switchForm" text=" Manage Employees">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="USERS" size="1.5em" />
-                           </graphic>
                            <styleClass>
                               <String fx:value="nav-btn" />
                               <String fx:value="shadow" />
@@ -77,9 +60,6 @@
                         </Button>
                         <!-- Logout Button -->
                         <Button fx:id="logout" layoutY="516.0" onAction="#logout" text="Log Out" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
-                           <graphic>
-                              <FontAwesomeIcon glyphName="SIGN_OUT" size="1.5em" />
-                           </graphic>
                            <styleClass>
                               <String fx:value="nav-btn" />
                               <String fx:value="shadow" />
@@ -96,9 +76,25 @@
                         <AnchorPane fx:id="home_form" visible="true">
                            <!-- Home Form Contents -->
                         </AnchorPane>
+                        
+                        <!-- Add Employee Form with TableView -->
                         <AnchorPane fx:id="addEmployee_form" visible="false">
-                           <!-- Add Employee Form Contents -->
+                           <children>
+                              <TableView fx:id="addEmployee_tableView" layoutX="50.0" layoutY="50.0" prefHeight="400.0" prefWidth="600.0">
+                                  <columns>
+                                      <TableColumn fx:id="addEmployee_col_employeeID" text="Employee ID" />
+                                      <TableColumn fx:id="addEmployee_col_name" text="Name" />
+                                      <TableColumn fx:id="addEmployee_col_gender" text="Gender" />
+                                      <TableColumn fx:id="addEmployee_col_depart" text="Department" />
+                                      <TableColumn fx:id="addEmployee_col_desig" text="Designation" />
+                                      <TableColumn fx:id="addEmployee_col_salary" text="Salary" />
+                                      <TableColumn fx:id="addEmployee_col_phoneNum" text="Phone Number" />
+                                      <TableColumn fx:id="addEmployee_col_epfNo" text="EPF Number" />
+                                  </columns>
+                              </TableView>
+                           </children>
                         </AnchorPane>
+                        
                         <AnchorPane fx:id="addUser_form" visible="false">
                            <!-- Add User Form Contents -->
                         </AnchorPane>

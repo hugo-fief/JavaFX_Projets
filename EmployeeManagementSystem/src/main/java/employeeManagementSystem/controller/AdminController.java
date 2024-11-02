@@ -70,7 +70,7 @@ public class AdminController implements Initializable {
         try {
             loginBtn.getScene().getWindow().hide();
 
-            Parent root = FXMLLoader.load(getClass().getResource("/techcompany/view/DashboardView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/employeeManagementSystem/view/DashboardView.fxml"));
             Stage stage = new Stage();
             Scene scene = new Scene(root);
 

@@ -9,7 +9,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 
 import employeeManagementSystem.model.Employee;
 import employeeManagementSystem.service.EmployeeService;
@@ -56,6 +58,21 @@ public class DashBoardController {
     private TextField addEmployee_epfNo;
     @FXML
     private Button addEmployee_btn;
+    @FXML
+    private Button close;
+    @FXML
+    private Button minimize;
+    @FXML
+    private Button logout;
+
+    @FXML
+    private AnchorPane home_form;
+    @FXML
+    private AnchorPane addEmployee_form;
+    @FXML
+    private AnchorPane addUser_form;
+    @FXML
+    private AnchorPane depDesig_form;
 
     public void initialize() {
         setupTableColumns();
@@ -90,7 +107,6 @@ public class DashBoardController {
         employee.setEmployeeID(Integer.parseInt(addEmployee_employeeID.getText()));
         employee.setName(addEmployee_name.getText());
         employee.setGender(addEmployee_gender.getSelectionModel().getSelectedItem());
-        // Assuming you have methods to convert department and designation names to IDs
         employee.setDepartmentID(getDepartmentID(addEmployee_depart.getSelectionModel().getSelectedItem()));
         employee.setDesignationID(getDesignationID(addEmployee_desig.getSelectionModel().getSelectedItem()));
         employee.setSalary(Double.parseDouble(addEmployee_salary.getText()));
@@ -132,14 +148,36 @@ public class DashBoardController {
     }
 
     private int getDepartmentID(String departmentName) {
-        // Implement a lookup method to get the department ID based on the name
-        // This can use another service or a cache
         return 0;
     }
 
     private int getDesignationID(String designationName) {
-        // Implement a lookup method to get the designation ID based on the name
-        // This can use another service or a cache
         return 0;
+    }
+
+    @FXML
+    private void close() {
+        Stage stage = (Stage) close.getScene().getWindow();
+        stage.close();
+    }
+
+    @FXML
+    private void minimize() {
+        Stage stage = (Stage) minimize.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    private void switchForm() {
+        home_form.setVisible(false);
+        addEmployee_form.setVisible(true);
+        addUser_form.setVisible(false);
+        depDesig_form.setVisible(false);
+    }
+
+    @FXML
+    private void logout() {
+        Stage stage = (Stage) logout.getScene().getWindow();
+        stage.close();
     }
 }

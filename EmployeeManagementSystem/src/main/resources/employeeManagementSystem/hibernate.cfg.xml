@@ -28,6 +28,9 @@
 
         <!-- Mention annotated classes here -->
         <mapping class="employeeManagementSystem.model.Admin"/>
+        <mapping class="employeeManagementSystem.model.Employee"/>
+        <mapping class="employeeManagementSystem.model.Department"/>
+        <mapping class="employeeManagementSystem.model.Designation"/>
         <!-- Ajoutez d'autres classes mappées ici -->
     </session-factory>
 </hibernate-configuration>
