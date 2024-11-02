@@ -10,14 +10,18 @@
 ```
 employee-management-system-main
 ├───src
-│   └───main
+│   ├───main
+│   │   ├───java
+│   │   │   └───employeeManagementSystem
+│   │   │       ├───bdd
+│   │   │       ├───controller
+│   │   │       ├───model
+│   │   │       └───service
+│   │   └───resources
+│   │       └───employeeManagementSystem
+│   │           └───view
+│   └───test
 │       └───java
-│           └───techcompany
-│               ├───bdd
-│               ├───controller
-│               ├───model
-│               ├───service
-│               └───view
 ```
 
 ## Commandes Maven a connaitre
