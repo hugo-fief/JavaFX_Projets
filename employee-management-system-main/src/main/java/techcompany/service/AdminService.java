@@ -1,6 +1,8 @@
-package techcompany;
+package techcompany.service;
 
-import com.techcompany.model.Admin;
+import techcompany.bdd.HibernateUtil;
+import techcompany.model.Admin;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import javax.validation.constraints.NotBlank;

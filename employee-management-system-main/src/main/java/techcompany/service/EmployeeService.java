@@ -1,6 +1,8 @@
-package techcompany;
+package techcompany.service;
 
-import com.techcompany.model.Employee;
+import techcompany.bdd.HibernateUtil;
+import techcompany.model.Employee;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import java.util.List;

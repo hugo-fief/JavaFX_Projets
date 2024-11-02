@@ -1,4 +1,4 @@
-package techcompany;
+package techcompany.bdd;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,4 +1,7 @@
-package techcompany;
+package techcompany.controller;
+
+import techcompany.model.Admin;
+import techcompany.service.AdminService;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,8 +44,8 @@ public class AdminController implements Initializable {
         Admin admin = adminService.login(username.getText(), password.getText());
 
         if (admin != null) {
-            getData.username = admin.getUsername();
-            getData.userRole = admin.getRole();
+            username = admin.getUsername();
+            userRole = admin.getRole();
 
             showAlert(Alert.AlertType.INFORMATION, "Information Message", "Successfully logged in");
 

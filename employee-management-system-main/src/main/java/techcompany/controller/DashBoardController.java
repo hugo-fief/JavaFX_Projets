@@ -1,4 +1,7 @@
-package techcompany;
+package techcompany.controller;
+
+import techcompany.model.Employee;
+import techcompany.service.EmployeeService;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

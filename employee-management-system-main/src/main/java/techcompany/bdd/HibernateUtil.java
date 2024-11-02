@@ -1,4 +1,4 @@
-package techcompany;
+package techcompany.bdd;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
