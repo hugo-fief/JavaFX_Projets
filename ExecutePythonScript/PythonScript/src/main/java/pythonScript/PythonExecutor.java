@@ -4,15 +4,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 
-public class App extends Application {
+public class PythonExecutor extends Application {
 
     // Chemin de l'interpreteur Python, lu depuis le fichier de configuration
     private static String pythonCommand;
@@ -108,9 +110,23 @@ public class App extends Application {
 
     // Executer le script Python avec les arguments
     private static void executePythonScript(String scriptPath, String arguments) throws PythonExecutionException, IOException {
-        // Utilisation de pythonCommand (venv) pour executer le script
-        ProcessBuilder processBuilder = new ProcessBuilder(pythonCommand, scriptPath, arguments.split(" "));
+    	// Creer une liste pour les arguments de ProcessBuilder
+        List<String> command = new ArrayList<>();
+        command.add(pythonCommand);  // Ajoute le chemin de l'executable Python
+        command.add(scriptPath);     // Ajoute le chemin du script Python
+        
+        // Ajouter chaque argument separement à la liste
+        for (String arg : arguments.split(" ")) {
+            command.add(arg);
+        }
+        
+        // Initialiser ProcessBuilder avec la liste complete des arguments
+        ProcessBuilder processBuilder = new ProcessBuilder(command);
         Process process = processBuilder.start();
+    	
+    	// Utilisation de pythonCommand (venv) pour executer le script
+        // ProcessBuilder processBuilder = new ProcessBuilder(pythonCommand, scriptPath, arguments.split(" "));
+        // Process process = processBuilder.start();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
@@ -121,12 +137,42 @@ public class App extends Application {
             throw new PythonExecutionException("Erreur lors de l'execution du script Python : " + e.getMessage());
         }
     }
+    
+    private static void executeNotebook(String notebookPath) throws PythonExecutionException, IOException {
+        // Liste de commandes pour exécuter le notebook via nbconvert
+        List<String> command = new ArrayList<>();
+        command.add(pythonCommand);  // Ajoute l'exécutable Python (chemin du venv si utilisé)
+        command.add("-m");
+        command.add("jupyter");
+        command.add("nbconvert");
+        command.add("--to");
+        command.add("notebook");
+        command.add("--execute");
+        command.add(notebookPath);  // Chemin vers le fichier .ipynb
+
+        // Initialiser ProcessBuilder avec la liste de commandes
+        ProcessBuilder processBuilder = new ProcessBuilder(command);
+        Process process = processBuilder.start();
+
+        // Lire et afficher la sortie
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            throw new PythonExecutionException("Erreur lors de l'exécution du notebook : " + e.getMessage());
+        }
+    }
 
     // Charger les proprietes depuis un fichier
     private static Properties loadProperties(String filename) throws IOException {
         Properties properties = new Properties();
-        try (FileReader reader = new FileReader(filename)) {
-            properties.load(reader);
+        try (InputStream input = PythonExecutor.class.getClassLoader().getResourceAsStream("pythonScript/" + filename)) {
+            if (input == null) {
+                throw new IOException("Fichier de configuration '" + filename + "' non trouvé dans le classpath.");
+            }
+            properties.load(input);
         }
         return properties;
     }
