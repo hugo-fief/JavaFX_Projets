@@ -1,15 +1,16 @@
-<!DOCTYPE hibernate-configuration SYSTEM "hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
-
     <session-factory>
-        <!-- Database connection settings -->
+        <!-- JDBC Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/employee</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
 
-        <!-- JDBC connection pool settings -->
+        <!-- JDBC connection pool settings ... -->
         <property name="hibernate.c3p0.min_size">5</property>
         <property name="hibernate.c3p0.max_size">20</property>
         <property name="hibernate.c3p0.timeout">300</property>
@@ -25,12 +26,8 @@
         <!-- Drop and re-create the database schema on startup -->
         <property name="hibernate.hbm2ddl.auto">update</property>
 
-        <!-- Specify annotated entity classes -->
+        <!-- Mention annotated classes here -->
         <mapping class="employeeManagementSystem.model.Admin"/>
-        <mapping class="employeeManagementSystem.model.Employee"/>
-        <mapping class="employeeManagementSystem.model.Department"/>
-        <mapping class="employeeManagementSystem.model.Designation"/>
-        
+        <!-- Ajoutez d'autres classes mappées ici -->
     </session-factory>
-
 </hibernate-configuration>
