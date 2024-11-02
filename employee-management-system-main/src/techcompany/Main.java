@@ -11,7 +11,7 @@ import javafx.stage.StageStyle;
 /**
  * Main application class that starts the JavaFX application.
 */
-public class MainApp extends Application {
+public class Main extends Application {
     private static final double DRAG_OPACITY = 0.8;
     private static final double DEFAULT_OPACITY = 1.0;
     
