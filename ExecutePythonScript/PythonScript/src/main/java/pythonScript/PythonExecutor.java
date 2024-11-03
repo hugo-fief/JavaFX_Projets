@@ -23,7 +23,7 @@ public class PythonExecutor extends Application {
     private static final String REQUIRED_PYTHON_VERSION = "Python 3.11";
     private static final String SCRIPT_PATH_PROPERTY = "python.script.path";
     private static final String ARGUMENTS_PROPERTY = "python.script.arguments";
-    private static final List<String> REQUIRED_LIBRARIES = Arrays.asList("pandas", "matplotlib");
+    private static final List<String> REQUIRED_LIBRARIES = Arrays.asList("pandas", "matplotlib", "openpyxl");
 
     public static void main(String[] args) {
         launch(args);
@@ -69,7 +69,7 @@ public class PythonExecutor extends Application {
     private static String loadPythonCommand(Properties properties) {
         // Charger le chemin de l'executable Python du venv defini dans config.properties
         // Valeur par defaut "python3" si venv non specifiee
-        return properties.getProperty("python.command", "python3");
+        return properties.getProperty("python.command", "python");
     }
 
     // Verifier la version de Python
@@ -85,7 +85,8 @@ public class PythonExecutor extends Application {
 
     // Verifier les librairies Python requises
     private static void checkPythonLibraries() throws IOException, ConfigurationException {
-        ProcessBuilder listLibraries = new ProcessBuilder(pythonCommand, "-m", "pip", "list");
+        // ProcessBuilder listLibraries = new ProcessBuilder(pythonCommand, "-m", "pip", "list");
+    	ProcessBuilder listLibraries = new ProcessBuilder("pip", "list");
         Process listProcess = listLibraries.start();
         
         System.out.println("Librairies Python installees :");
@@ -97,7 +98,8 @@ public class PythonExecutor extends Application {
         }
 
         for (String library : REQUIRED_LIBRARIES) {
-            ProcessBuilder checkLibrary = new ProcessBuilder(pythonCommand, "-m", "pip", "show", library);
+            // ProcessBuilder checkLibrary = new ProcessBuilder(pythonCommand, "-m", "pip", "show", library);
+            ProcessBuilder checkLibrary = new ProcessBuilder("pip", "show", library);
             Process checkProcess = checkLibrary.start();
             
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(checkProcess.getInputStream()))) {
@@ -123,10 +125,6 @@ public class PythonExecutor extends Application {
         // Initialiser ProcessBuilder avec la liste complete des arguments
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         Process process = processBuilder.start();
-    	
-    	// Utilisation de pythonCommand (venv) pour executer le script
-        // ProcessBuilder processBuilder = new ProcessBuilder(pythonCommand, scriptPath, arguments.split(" "));
-        // Process process = processBuilder.start();
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
@@ -135,33 +133,6 @@ public class PythonExecutor extends Application {
             }
         } catch (IOException e) {
             throw new PythonExecutionException("Erreur lors de l'execution du script Python : " + e.getMessage());
-        }
-    }
-    
-    private static void executeNotebook(String notebookPath) throws PythonExecutionException, IOException {
-        // Liste de commandes pour exécuter le notebook via nbconvert
-        List<String> command = new ArrayList<>();
-        command.add(pythonCommand);  // Ajoute l'exécutable Python (chemin du venv si utilisé)
-        command.add("-m");
-        command.add("jupyter");
-        command.add("nbconvert");
-        command.add("--to");
-        command.add("notebook");
-        command.add("--execute");
-        command.add(notebookPath);  // Chemin vers le fichier .ipynb
-
-        // Initialiser ProcessBuilder avec la liste de commandes
-        ProcessBuilder processBuilder = new ProcessBuilder(command);
-        Process process = processBuilder.start();
-
-        // Lire et afficher la sortie
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            throw new PythonExecutionException("Erreur lors de l'exécution du notebook : " + e.getMessage());
         }
     }
 
