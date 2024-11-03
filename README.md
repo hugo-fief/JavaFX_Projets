@@ -10,10 +10,14 @@
 bonnes pratiques de Développement, tout en respectant un certains nombres de specifications fonctionnelles, ayant pour but
 d'assurer la protection envers de potentiels failles de sécurités
 
+## Projet de Gestion des Raccourcis
+
+- Ce projet a été développé afin de pouvoir définir des raccourcis paramétrable depuis un programme Java, en mettant en place des bonnes pratiques de Développement, tout en respectant un certains nombres de specifications fonctionnelles, ayant pour but d'assurer la protection envers de potentiels failles de sécurités
+
 ## Arborescence du Projet de Gestion d'Employés
 
 ```
-employee-management-system-main
+EmployeeManagementSystem
 ├───src
 │   ├───main
 │   │   ├───java
@@ -32,9 +36,35 @@ employee-management-system-main
 ## Arborescence du Projet d'Exécution de Script Python
 
 ```
-employee-management-system-main
-├───output
-├───venv
+PythonScript
+├───src
+│   ├───main
+│   │   ├───java
+│   │   │   └───pythonScript
+│   │   └───resources
+│   │       └───pythonScript
+│   │           └───output
+│   └───test
+│       └───java
+│           └───pythonScript
+```
+
+## Arborescence du Projet de Gestion des Raccourcis
+
+```
+ShortcutManagerFX
+├───src
+│   ├───main
+│   │   ├───java
+│   │   │   └───shortcutManagerFX
+│   │   │       ├───controller
+│   │   │       ├───model
+│   │   │       └───util
+│   │   └───resources
+│   │       └───shortcutManagerFX
+│   └───test
+│       └───java
+│           └───shortcutManagerFX
 ```
 
 ## Commandes Maven a connaitre
