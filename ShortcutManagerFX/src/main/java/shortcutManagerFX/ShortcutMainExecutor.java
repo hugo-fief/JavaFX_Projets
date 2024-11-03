@@ -17,6 +17,7 @@ public class ShortcutMainExecutor extends Application {
     private ShortcutManager shortcutManager;
     private Button saveButton;
     private Button openButton;
+    private Scene mainScene;
 
     @Override
     public void start(Stage primaryStage) {
@@ -29,20 +30,18 @@ public class ShortcutMainExecutor extends Application {
         openButton.setOnAction(e -> performOpenAction());
 
         Button configButton = new Button("Configure Shortcuts");
-        configButton.setOnAction(e -> new ShortcutConfigController(shortcutManager, this).showConfigWindow());
+        configButton.setOnAction(e -> performOpenConfigAction(primaryStage));
 
         VBox layout = new VBox(10, saveButton, openButton, configButton);
         layout.setSpacing(15);
-        Scene scene = new Scene(layout, 300, 200);
+        mainScene = new Scene(layout, 300, 200);  // Initialiser mainScene
 
-        // Appliquer le fichier CSS
         File cssFile = new File("src/main/resources/shortcutManagerFX/styles.css");
-        scene.getStylesheets().add(cssFile.toURI().toString());
+        mainScene.getStylesheets().add(cssFile.toURI().toString());
 
-        // Configurer l'écoute des raccourcis clavier
-        configureKeyboardShortcuts(scene);
+        configureKeyboardShortcuts(mainScene);
 
-        primaryStage.setScene(scene);
+        primaryStage.setScene(mainScene);
         primaryStage.setTitle("Shortcut App");
         primaryStage.show();
     }
@@ -58,35 +57,39 @@ public class ShortcutMainExecutor extends Application {
             } else if (isShortcutPressed(event, openShortcut)) {
                 performOpenAction();
             } else if (isShortcutPressed(event, configShortcut)) {
-            	performOpenConfigAction();
+                performOpenConfigAction((Stage) scene.getWindow());
             }
         });
     }
 
     private boolean isShortcutPressed(KeyEvent event, String shortcut) {
-        // Créer une combinaison de touches à partir du raccourci défini
-        KeyCombination keyCombination = KeyCombination.keyCombination(shortcut);
+        // Remplacer "Maj" par "Shift" pour correspondre au format attendu par JavaFX
+        String formattedShortcut = shortcut.replace("Maj", "Shift");
+        
+        // Créer une combinaison de touches à partir du raccourci formatté
+        KeyCombination keyCombination = KeyCombination.keyCombination(formattedShortcut);
         return keyCombination.match(event);
     }
 
     private void performSaveAction() {
         System.out.println("Save action triggered!");
-        // Ajoutez ici le code spécifique pour l'action de sauvegarde
     }
 
     private void performOpenAction() {
         System.out.println("Open action triggered!");
-        // Ajoutez ici le code spécifique pour l'action d'ouverture
     }
-    
-    private void performOpenConfigAction() {
-        // Ouvrir la fenêtre de configuration
-        new ShortcutConfigController(shortcutManager, this).showConfigWindow();
+
+    private void performOpenConfigAction(Stage primaryStage) {
+        new ShortcutConfigController(shortcutManager, this).showConfigWindow(primaryStage);
     }
 
     public void refreshShortcuts() {
         saveButton.setText("Save (Shortcut: " + shortcutManager.getShortcut("save") + ")");
         openButton.setText("Open (Shortcut: " + shortcutManager.getShortcut("open") + ")");
+    }
+
+    public Scene getMainScene() {
+        return mainScene;
     }
 
     public static void main(String[] args) {
