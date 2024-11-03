@@ -32,11 +32,6 @@ public class DashBoardController {
     private void performOpenAction() {
         System.out.println("Open action triggered!");
     }
-
-    /*private void openConfigWindow() {
-        Stage stage = (Stage) saveButton.getScene().getWindow();
-        new ShortcutConfigController().openConfigWindow(stage, shortcutManager);
-    }*/
     
     @FXML
     private void openConfigWindow() {
