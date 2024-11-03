@@ -43,7 +43,7 @@ public class ShortcutConfigController {
         shortcutManager.setShortcut("open", openShortcut);
         shortcutManager.saveShortcuts();
 
-        mainStage.setScene(mainStage.getScene()); // Retourner à la scene principale
+        mainStage.setScene(mainStage.getScene()); // Retour à la scène principale
     }
 
     private void showErrorAlert(String title, String message) {
@@ -52,5 +52,10 @@ public class ShortcutConfigController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void openConfigWindow(Stage primaryStage, ShortcutManager shortcutManager) {
+        this.mainStage = primaryStage;
+        this.shortcutManager = shortcutManager;
     }
 }

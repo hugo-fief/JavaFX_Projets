@@ -1,6 +1,5 @@
 package shortcutManagerFX.controller;
 
-import java.io.File;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
@@ -27,29 +26,30 @@ public class DashBoardController {
     @FXML
     private void performSaveAction() {
         System.out.println("Save action triggered!");
-        // Logique de sauvegarde
     }
 
     @FXML
     private void performOpenAction() {
         System.out.println("Open action triggered!");
-        // Logique d'ouverture
     }
 
+    /*private void openConfigWindow() {
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        new ShortcutConfigController().openConfigWindow(stage, shortcutManager);
+    }*/
+    
     @FXML
     private void openConfigWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/ShortcutConfig.fxml"));
             Scene configScene = new Scene(loader.load());
-            
-            File cssFile = new File("src/main/resources/shortcutManagerFX/styles.css");
-            configScene.getStylesheets().add(cssFile.toURI().toString());
 
+            // Initialiser le contrôleur de configuration avec le gestionnaire de raccourcis et la fenêtre principale
             ShortcutConfigController configController = loader.getController();
             configController.initialize(shortcutManager, (Stage) saveButton.getScene().getWindow());
 
             Stage stage = (Stage) saveButton.getScene().getWindow();
-            stage.setScene(configScene);
+            stage.setScene(configScene);  // Remplacer la scène principale par celle de configuration
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -60,4 +60,3 @@ public class DashBoardController {
         openButton.setText("Open (Shortcut: " + shortcutManager.getShortcut("open") + ")");
     }
 }
-
