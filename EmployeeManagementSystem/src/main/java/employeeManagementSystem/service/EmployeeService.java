@@ -8,9 +8,6 @@ import java.util.List;
 import employeeManagementSystem.bdd.HibernateUtil;
 import employeeManagementSystem.model.Employee;
 
-/**
- * Service class for Employee-related operations.
- */
 public class EmployeeService {
 
     public List<Employee> getAllEmployees() {

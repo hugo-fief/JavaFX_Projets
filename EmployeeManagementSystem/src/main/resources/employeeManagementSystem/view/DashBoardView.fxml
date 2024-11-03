@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.image.*?>
-<?import javafx.scene.chart.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -14,7 +13,6 @@
    <children>
       <AnchorPane fx:id="main_form" prefHeight="600.0" prefWidth="1100.0">
          <children>
-            <!-- Updated BorderPane and Header Layout -->
             <BorderPane prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <top>
                   <AnchorPane prefHeight="45.0" prefWidth="1100.0" BorderPane.alignment="CENTER">
@@ -29,8 +27,6 @@
                      </children>
                   </AnchorPane>
                </top>
-
-               <!-- Left Pane for Navigation -->
                <left>
                   <AnchorPane prefWidth="200.0" styleClass="nav-form">
                      <children>
@@ -44,21 +40,24 @@
                               <Font name="Impact" size="20.0" />
                            </font>
                         </Label>
-                        <!-- Home Button -->
                         <Button fx:id="home_btn" layoutX="10.0" layoutY="189.0" onAction="#switchForm" text=" Home">
                            <styleClass>
                               <String fx:value="nav-btn" />
                               <String fx:value="shadow" />
                            </styleClass>
                         </Button>
-                        <!-- Additional Buttons as Required -->
                         <Button fx:id="addEmployee_btn" layoutX="10.0" layoutY="242.0" onAction="#switchForm" text=" Manage Employees">
                            <styleClass>
                               <String fx:value="nav-btn" />
                               <String fx:value="shadow" />
                            </styleClass>
                         </Button>
-                        <!-- Logout Button -->
+                        <Button fx:id="addUser_btn" layoutX="10.0" layoutY="293.0" onAction="#switchForm" text=" Manage Users">
+                           <styleClass>
+                              <String fx:value="nav-btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                        </Button>
                         <Button fx:id="logout" layoutY="516.0" onAction="#logout" text="Log Out" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0">
                            <styleClass>
                               <String fx:value="nav-btn" />
@@ -68,38 +67,68 @@
                      </children>
                   </AnchorPane>
                </left>
-
-               <!-- Center Pane for Employee and User Management Forms -->
                <center>
                   <AnchorPane>
                      <children>
                         <AnchorPane fx:id="home_form" visible="true">
-                           <!-- Home Form Contents -->
-                        </AnchorPane>
-                        
-                        <!-- Add Employee Form with TableView -->
-                        <AnchorPane fx:id="addEmployee_form" visible="false">
                            <children>
-                              <TableView fx:id="addEmployee_tableView" layoutX="50.0" layoutY="50.0" prefHeight="400.0" prefWidth="600.0">
-                                  <columns>
-                                      <TableColumn fx:id="addEmployee_col_employeeID" text="Employee ID" />
-                                      <TableColumn fx:id="addEmployee_col_name" text="Name" />
-                                      <TableColumn fx:id="addEmployee_col_gender" text="Gender" />
-                                      <TableColumn fx:id="addEmployee_col_depart" text="Department" />
-                                      <TableColumn fx:id="addEmployee_col_desig" text="Designation" />
-                                      <TableColumn fx:id="addEmployee_col_salary" text="Salary" />
-                                      <TableColumn fx:id="addEmployee_col_phoneNum" text="Phone Number" />
-                                      <TableColumn fx:id="addEmployee_col_epfNo" text="EPF Number" />
-                                  </columns>
-                              </TableView>
+                              <Label layoutX="300.0" layoutY="100.0" text="Welcome to the Employee Management System!" />
                            </children>
                         </AnchorPane>
-                        
+                        <AnchorPane fx:id="addEmployee_form" visible="false">
+                           <children>
+                              <TableView fx:id="addEmployee_tableView" layoutX="50.0" layoutY="50.0" prefHeight="400.0" prefWidth="900.0">
+                                 <columns>
+                                    <TableColumn fx:id="addEmployee_col_employeeID" text="Employee ID" />
+                                    <TableColumn fx:id="addEmployee_col_name" text="Name" />
+                                    <TableColumn fx:id="addEmployee_col_gender" text="Gender" />
+                                    <TableColumn fx:id="addEmployee_col_depart" text="Department" />
+                                    <TableColumn fx:id="addEmployee_col_desig" text="Designation" />
+                                    <TableColumn fx:id="addEmployee_col_salary" text="Salary" />
+                                    <TableColumn fx:id="addEmployee_col_phoneNum" text="Phone Number" />
+                                    <TableColumn fx:id="addEmployee_col_epfNo" text="EPF Number" />
+                                 </columns>
+                              </TableView>
+                              <TextField fx:id="addEmployee_employeeID" layoutX="50.0" layoutY="470.0" promptText="Employee ID" />
+                              <TextField fx:id="addEmployee_name" layoutX="200.0" layoutY="470.0" promptText="Name" />
+                              <ComboBox fx:id="addEmployee_gender" layoutX="350.0" layoutY="470.0" promptText="Gender" />
+                              <ComboBox fx:id="addEmployee_depart" layoutX="500.0" layoutY="470.0" promptText="Department" />
+                              <ComboBox fx:id="addEmployee_desig" layoutX="650.0" layoutY="470.0" promptText="Designation" />
+                              <TextField fx:id="addEmployee_salary" layoutX="800.0" layoutY="470.0" promptText="Salary" />
+                              <TextField fx:id="addEmployee_phoneNum" layoutX="50.0" layoutY="510.0" promptText="Phone Number" />
+                              <TextField fx:id="addEmployee_epfNo" layoutX="200.0" layoutY="510.0" promptText="EPF Number" />
+                              <Button fx:id="addEmployee_add_btn" layoutX="350.0" layoutY="510.0" text="Add" />
+                              <Button fx:id="addEmployee_update_btn" layoutX="450.0" layoutY="510.0" text="Update" />
+                              <Button fx:id="addEmployee_delete_btn" layoutX="550.0" layoutY="510.0" text="Delete" />
+                           </children>
+                        </AnchorPane>
                         <AnchorPane fx:id="addUser_form" visible="false">
-                           <!-- Add User Form Contents -->
+                           <children>
+                              <Label layoutX="300.0" layoutY="50.0" text="Manage Users Form" />
+                              <TextField fx:id="addUserUsername" layoutX="50.0" layoutY="100.0" promptText="Username" />
+                              <PasswordField fx:id="addUserPassword" layoutX="50.0" layoutY="150.0" promptText="Password" />
+                              <Button fx:id="addUserAddBtn" layoutX="50.0" layoutY="200.0" text="Create User" />
+                              <Button fx:id="addUserDeleteBtn" layoutX="150.0" layoutY="200.0" text="Delete User" />
+                           </children>
                         </AnchorPane>
                         <AnchorPane fx:id="depDesig_form" visible="false">
-                           <!-- Department/Designation Form Contents -->
+                           <children>
+                              <Label layoutX="300.0" layoutY="50.0" text="Manage Departments &amp; Designations" />
+                              <TableView fx:id="departmentTable_view" layoutX="50.0" layoutY="100.0" prefHeight="200.0" prefWidth="400.0">
+                                 <columns>
+                                    <TableColumn fx:id="dep_col_departmentName" text="Department Name" />
+                                 </columns>
+                              </TableView>
+                              <TableView fx:id="designationTable_view" layoutX="500.0" layoutY="100.0" prefHeight="200.0" prefWidth="400.0">
+                                 <columns>
+                                    <TableColumn fx:id="des_col_designationName" text="Designation Name" />
+                                 </columns>
+                              </TableView>
+                              <TextField fx:id="departmentName_textField" layoutX="50.0" layoutY="350.0" promptText="Department" />
+                              <TextField fx:id="designationName_textField" layoutX="500.0" layoutY="350.0" promptText="Designation" />
+                              <Button fx:id="addDepDesig_Btn" layoutX="300.0" layoutY="400.0" text="Add" />
+                              <Button fx:id="deleteDepDesig_Btn" layoutX="400.0" layoutY="400.0" text="Delete" />
+                           </children>
                         </AnchorPane>
                      </children>
                   </AnchorPane>
