@@ -1,6 +1,10 @@
 package shortcutManagerFX.controller;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -43,7 +47,16 @@ public class ShortcutConfigController {
         shortcutManager.setShortcut("open", openShortcut);
         shortcutManager.saveShortcuts();
 
-        mainStage.setScene(mainStage.getScene()); // Retour à la scène principale
+        // Retourner à la scène principale après avoir sauvegardé
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/DashBoard.fxml"));
+        try {
+            Scene mainScene = new Scene(loader.load());
+            DashBoardController dashBoardController = loader.getController();
+            dashBoardController.initialize(shortcutManager);
+            mainStage.setScene(mainScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showErrorAlert(String title, String message) {
@@ -52,10 +65,5 @@ public class ShortcutConfigController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    public void openConfigWindow(Stage primaryStage, ShortcutManager shortcutManager) {
-        this.mainStage = primaryStage;
-        this.shortcutManager = shortcutManager;
     }
 }

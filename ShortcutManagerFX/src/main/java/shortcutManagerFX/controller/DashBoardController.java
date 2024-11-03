@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 import shortcutManagerFX.model.ShortcutManager;
@@ -21,6 +23,9 @@ public class DashBoardController {
     public void initialize(ShortcutManager shortcutManager) {
         this.shortcutManager = shortcutManager;
         refreshShortcuts();
+
+        // Configurer les raccourcis clavier
+        configureKeyboardShortcuts(saveButton.getScene());
     }
 
     @FXML
@@ -32,7 +37,7 @@ public class DashBoardController {
     private void performOpenAction() {
         System.out.println("Open action triggered!");
     }
-    
+
     @FXML
     private void openConfigWindow() {
         try {
@@ -53,5 +58,23 @@ public class DashBoardController {
     public void refreshShortcuts() {
         saveButton.setText("Save (Shortcut: " + shortcutManager.getShortcut("save") + ")");
         openButton.setText("Open (Shortcut: " + shortcutManager.getShortcut("open") + ")");
+    }
+
+    private void configureKeyboardShortcuts(Scene scene) {
+        // Ajouter un écouteur pour les raccourcis clavier
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (isShortcutPressed(event, shortcutManager.getShortcut("save"))) {
+                performSaveAction();
+            } else if (isShortcutPressed(event, shortcutManager.getShortcut("open"))) {
+                performOpenAction();
+            } else if (isShortcutPressed(event, shortcutManager.getShortcut("config"))) {
+                openConfigWindow();
+            }
+        });
+    }
+
+    private boolean isShortcutPressed(KeyEvent event, String shortcut) {
+        KeyCombination keyCombination = KeyCombination.keyCombination(shortcut.replace("Maj", "Shift"));
+        return keyCombination.match(event);
     }
 }
