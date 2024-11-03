@@ -1,5 +1,7 @@
 package shortcutManagerFX.controller;
 
+import java.io.File;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,40 +13,48 @@ import shortcutManagerFX.ShortcutMainExecutor;
 import shortcutManagerFX.model.ShortcutManager;
 
 public class ShortcutConfigController {
-    private ShortcutManager shortcutManager;
-    private ShortcutMainExecutor shortcutMainExecutor;
+	private ShortcutManager shortcutManager;
+	private ShortcutMainExecutor shortcutMainExecutor;
 
-    public ShortcutConfigController(ShortcutManager shortcutManager, ShortcutMainExecutor shortcutMainExecutor) {
-        this.shortcutManager = shortcutManager;
-        this.shortcutMainExecutor = shortcutMainExecutor;
-    }
+	public ShortcutConfigController(ShortcutManager shortcutManager, ShortcutMainExecutor shortcutMainExecutor) {
+		this.shortcutManager = shortcutManager;
+		this.shortcutMainExecutor = shortcutMainExecutor;
+	}
 
-    public void showConfigWindow() {
-        Stage configStage = new Stage();
-        configStage.setTitle("Configure Shortcuts");
+	public void showConfigWindow() {
+		Stage configStage = new Stage();
+		configStage.setTitle("Configure Shortcuts");
 
-        GridPane grid = new GridPane();
-        Label saveLabel = new Label("Save Shortcut:");
-        TextField saveField = new TextField(shortcutManager.getShortcut("save"));
-        Label openLabel = new Label("Open Shortcut:");
-        TextField openField = new TextField(shortcutManager.getShortcut("open"));
+		GridPane grid = new GridPane();
+		grid.setHgap(10);
+		grid.setVgap(10);
+		grid.setStyle("-fx-padding: 20;");
 
-        Button saveButton = new Button("Save Changes");
-        saveButton.setOnAction(e -> {
-            shortcutManager.setShortcut("save", saveField.getText());
-            shortcutManager.setShortcut("open", openField.getText());
-            shortcutManager.saveShortcuts();
+		Label saveLabel = new Label("Save Shortcut:");
+		TextField saveField = new TextField(shortcutManager.getShortcut("save"));
+		Label openLabel = new Label("Open Shortcut:");
+		TextField openField = new TextField(shortcutManager.getShortcut("open"));
 
-            // Appeler refreshShortcuts() pour rafraîchir la fenêtre principale
-            shortcutMainExecutor.refreshShortcuts();
-            configStage.close();
-        });
+		Button saveButton = new Button("Save Changes");
+		saveButton.setOnAction(e -> {
+			shortcutManager.setShortcut("save", saveField.getText());
+			shortcutManager.setShortcut("open", openField.getText());
+			shortcutManager.saveShortcuts();
+			shortcutMainExecutor.refreshShortcuts();
+			configStage.close();
+		});
 
-        grid.addRow(0, saveLabel, saveField);
-        grid.addRow(1, openLabel, openField);
-        grid.addRow(2, saveButton);
+		grid.addRow(0, saveLabel, saveField);
+		grid.addRow(1, openLabel, openField);
+		grid.addRow(2, saveButton);
 
-        configStage.setScene(new Scene(grid, 300, 200));
-        configStage.show();
-    }
+		Scene scene = new Scene(grid, 300, 200);
+
+		// Appliquer le fichier CSS
+		File cssFile = new File("src/main/resources/shortcutManagerFX/styles.css");
+		scene.getStylesheets().add(cssFile.toURI().toString());
+
+		configStage.setScene(scene);
+		configStage.show();
+	}
 }

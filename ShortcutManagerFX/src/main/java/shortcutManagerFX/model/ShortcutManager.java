@@ -73,6 +73,7 @@ public class ShortcutManager {
         shortcuts.put("save", "Ctrl+S");
         shortcuts.put("open", "Ctrl+O");
         shortcuts.put("exit", "Ctrl+Q");
+        shortcuts.put("config", "Ctrl+H");
         saveShortcuts();
     }
 }
