@@ -7,25 +7,26 @@ import java.nio.file.Paths;
 import java.io.IOException;
 import java.io.InputStream;
 
-import java.util.Properties;
 import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Arrays;
+import java.util.List;
 
 public class PythonExecutor extends Application {
 
     // Chemin de l'interpreteur Python, lu depuis le fichier de configuration
     private static String pythonCommand;
 
-    // Autres constantes
+    // Constantes pour les cles des proprietes et des versions requises
     private static final String REQUIRED_PYTHON_VERSION = "Python 3.11";
-    private static final String SCRIPT_PATH_PROPERTY = "python.script.path";
-    private static final String ARGUMENTS_PROPERTY = "python.script.arguments";
+    private static final String PYTHON_COMMAND_KEY = "python.command";
+    private static final String SCRIPT_PATH_KEY = "python.script.path";
+    private static final String EXCEL_PATH_KEY = "python.script.excel";
+    private static final String OUTPUT_PATH_KEY = "python.script.output";
     private static final List<String> REQUIRED_LIBRARIES = Arrays.asList("pandas", "matplotlib", "openpyxl");
 
     public static void main(String[] args) {
@@ -39,26 +40,15 @@ public class PythonExecutor extends Application {
             Properties properties = loadProperties("config.properties");
 
             // Charger le chemin de l'interpreteur Python depuis config.properties
-            pythonCommand = loadPythonCommand(properties);
-            
-            // Charger le chemin du script, du fichier Excel et du dossier de sortie
-            String scriptPath = getResourcePath("pythonScript/" + properties.getProperty("python.script.path"));
-            String excelPath = getResourcePath("pythonScript/" + properties.getProperty("python.script.excel"));
-            String outputPath = getResourcePath("pythonScript/" + properties.getProperty("python.script.output"));
+            pythonCommand = properties.getProperty(PYTHON_COMMAND_KEY, "python");
 
-            
-            // Verifier la version de Python
-            if (!isCorrectPythonVersion()) {
-                throw new ConfigurationException("Version de Python non compatible. Python 3.11 requis.");
-            }
+            // Charger les chemins des ressources
+            String scriptPath = getResourcePath("pythonScript/" + properties.getProperty(SCRIPT_PATH_KEY));
+            String excelPath = getResourcePath("pythonScript/" + properties.getProperty(EXCEL_PATH_KEY));
+            String outputPath = getResourcePath("pythonScript/" + properties.getProperty(OUTPUT_PATH_KEY));
 
-            // Verifier les librairies installees
-            checkPythonLibraries();
-
-            // Verifier que le chemin et les arguments sont valides
-            if (scriptPath == null || scriptPath.isEmpty()) {
-                throw new ConfigurationException("Chemin du script ou arguments non definis dans le fichier de configuration.");
-            }
+            // Verifier l'environnement Python
+            checkPythonEnvironment();
 
             // Executer le script Python avec les arguments fournis
             executePythonScript(scriptPath, excelPath, outputPath);
@@ -66,96 +56,81 @@ public class PythonExecutor extends Application {
         } catch (ConfigurationException | PythonExecutionException e) {
             showErrorPopup(e.getMessage());
         } catch (IOException e) {
-            showErrorPopup("Erreur de chargement ou d'execution.");
+            showErrorPopup("Erreur de chargement ou d'execution : " + e.getMessage());
         }
     }
 
-    // Charger le chemin de l'interpreteur Python
-    private static String loadPythonCommand(Properties properties) {
-        // Charger le chemin de l'executable Python du venv defini dans config.properties
-        // Valeur par defaut "python3" si venv non specifiee
-        return properties.getProperty("python.command", "python");
+    // Verifier l'environnement Python : version et librairies
+    private static void checkPythonEnvironment() throws ConfigurationException, IOException {
+        if (!isCorrectPythonVersion()) {
+            throw new ConfigurationException("Version de Python non compatible. Python 3.11 requis.");
+        }
+        checkPythonLibraries();
     }
 
     // Verifier la version de Python
     private static boolean isCorrectPythonVersion() throws IOException {
-        // Utilisation de pythonCommand, qui peut pointer vers un venv
-        ProcessBuilder versionCheck = new ProcessBuilder(pythonCommand, "--version");
-        Process versionProcess = versionCheck.start();
-        try (BufferedReader versionReader = new BufferedReader(new InputStreamReader(versionProcess.getInputStream()))) {
-            String versionOutput = versionReader.readLine();
-            return versionOutput != null && versionOutput.contains(REQUIRED_PYTHON_VERSION);
-        }
+        String versionOutput = executeCommandAndGetOutput(List.of(pythonCommand, "--version"));
+        return versionOutput != null && versionOutput.contains(REQUIRED_PYTHON_VERSION);
     }
 
     // Verifier les librairies Python requises
     private static void checkPythonLibraries() throws IOException, ConfigurationException {
         for (String library : REQUIRED_LIBRARIES) {
-            ProcessBuilder checkLibrary = new ProcessBuilder("pip", "show", library);
-            Process checkProcess = checkLibrary.start();
-            
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(checkProcess.getInputStream()))) {
-                if (reader.lines().noneMatch(l -> l.contains("Name: " + library))) {
-                    throw new ConfigurationException("La librairie Python requise '" + library + "' n'est pas installee.");
-                }
+            String libraryInfo = executeCommandAndGetOutput(List.of("pip", "show", library));
+            if (libraryInfo == null || !libraryInfo.contains("Name: " + library)) {
+                throw new ConfigurationException("La librairie Python requise '" + library + "' n'est pas installee.");
             }
+        }
+    }
+
+    // Methode utilitaire pour executer une commande et obtenir la sortie
+    private static String executeCommandAndGetOutput(List<String> command) throws IOException {
+        ProcessBuilder processBuilder = new ProcessBuilder(command);
+        Process process = processBuilder.start();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            return reader.readLine(); // Retourne la premiere ligne de sortie
         }
     }
 
     // Executer le script Python avec les arguments
     private static void executePythonScript(String scriptPath, String excelPath, String outputPath) throws PythonExecutionException, IOException {
-    	// Creer une liste pour les arguments de ProcessBuilder
-    	List<String> command = new ArrayList<>();
-        command.add(pythonCommand);      // Interpreteur Python
-        command.add(scriptPath);         // Script Python
-        command.add(excelPath);          // Chemin du fichier Excel
-        command.add(outputPath);         // Dossier de sortie
-        
-        // Initialiser ProcessBuilder avec la liste complete des arguments
+        List<String> command = List.of(pythonCommand, scriptPath, excelPath, outputPath);
         ProcessBuilder processBuilder = new ProcessBuilder(command);
         Process process = processBuilder.start();
 
+        // Lire les sorties standard et erreur du script
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
 
-            String line;
-            System.out.println("Sortie standard du script Python :");
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-            
-            if (errorReader.readLine() != null) {
-            	System.out.println("Sortie d'erreur du script Python (si presente) :");
-			}
-            
-            while ((line = errorReader.readLine()) != null) {
-                System.err.println(line); // Afficher la sortie d'erreur en rouge dans la console (si disponible)
-            }
+            System.out.println("Execution du script Python en cours...");
+
+            reader.lines().forEach(System.out::println); // Afficher la sortie standard
+            errorReader.lines().forEach(System.err::println); // Afficher la sortie d'erreur en rouge
+
         } catch (IOException e) {
             throw new PythonExecutionException("Erreur lors de l'execution du script Python : " + e.getMessage());
         }
-        
-        // Verifier si le processus s'est termine correctement
+
+        // Verifier le code de sortie du processus
         try {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                System.out.println("Les fichiers generes se trouvent dans le repertoire suivant : \n" + outputPath);
+                System.out.println("Les fichiers generes se trouvent dans le repertoire de sortie : \n" + outputPath);
             } else {
-            	throw new PythonExecutionException("Erreur lors de l'execution du script Python. Code de sortie : " + exitCode);
+                throw new PythonExecutionException("Erreur lors de l'execution du script Python. Code de sortie : " + exitCode);
             }
         } catch (InterruptedException e) {
             throw new PythonExecutionException("Le processus a ete interrompu : " + e.getMessage());
         }
     }
-    
+
     // Obtenir le chemin d'un fichier dans le classpath
     private static String getResourcePath(String relativePath) throws IOException {
         try {
-            // Utilise getResource pour obtenir l'URL, puis Paths pour eviter les problemes de format
             if (PythonExecutor.class.getClassLoader().getResource(relativePath) == null) {
                 throw new IOException("Ressource non trouvee : " + relativePath);
             }
-            
             return Paths.get(PythonExecutor.class.getClassLoader().getResource(relativePath).toURI()).toString();
         } catch (URISyntaxException e) {
             throw new IOException("Erreur lors de la conversion du chemin de la ressource : " + relativePath, e);
@@ -185,12 +160,16 @@ public class PythonExecutor extends Application {
 
     // Exceptions personnalisees
     private static class ConfigurationException extends Exception {
+    	private static final long serialVersionUID = 1L;
+    	
         public ConfigurationException(String message) {
             super(message);
         }
     }
 
     private static class PythonExecutionException extends Exception {
+    	private static final long serialVersionUID = 1L;
+    	
         public PythonExecutionException(String message) {
             super(message);
         }

@@ -34,7 +34,7 @@ def generate_graphs(excel_file, output_folder):
     plt.savefig(f"{output_folder}/histogramme_valeur_b.png")
     plt.close()
 
-    print("Graphiques generes et enregistres avec succes.")
+    print("Graphiques generes et enregistres avec succes")
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
