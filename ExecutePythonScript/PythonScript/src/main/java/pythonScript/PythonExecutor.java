@@ -85,20 +85,7 @@ public class PythonExecutor extends Application {
 
     // Verifier les librairies Python requises
     private static void checkPythonLibraries() throws IOException, ConfigurationException {
-        // ProcessBuilder listLibraries = new ProcessBuilder(pythonCommand, "-m", "pip", "list");
-    	ProcessBuilder listLibraries = new ProcessBuilder("pip", "list");
-        Process listProcess = listLibraries.start();
-        
-        System.out.println("Librairies Python installees :");
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(listProcess.getInputStream()))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-        }
-
         for (String library : REQUIRED_LIBRARIES) {
-            // ProcessBuilder checkLibrary = new ProcessBuilder(pythonCommand, "-m", "pip", "show", library);
             ProcessBuilder checkLibrary = new ProcessBuilder("pip", "show", library);
             Process checkProcess = checkLibrary.start();
             
