@@ -1,0 +1,9 @@
+// PATH du fichier JSON a definir : C:/TrapilAnalyse_Preferences/shortcuts.json
+{
+    "shortcuts": {
+        "save": "Ctrl+Maj+N",
+        "exit": "Ctrl+Q",
+        "config": "Ctrl+H",
+        "open": "Ctrl+Alt+O"
+    }
+}
