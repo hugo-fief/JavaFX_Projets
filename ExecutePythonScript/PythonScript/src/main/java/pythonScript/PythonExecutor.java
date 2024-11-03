@@ -124,7 +124,10 @@ public class PythonExecutor extends Application {
                 System.out.println(line);
             }
             
-            System.out.println("Sortie d'erreur du script Python (si presente) :");
+            if (errorReader.readLine() != null) {
+            	System.out.println("Sortie d'erreur du script Python (si presente) :");
+			}
+            
             while ((line = errorReader.readLine()) != null) {
                 System.err.println(line); // Afficher la sortie d'erreur en rouge dans la console (si disponible)
             }
@@ -136,8 +139,7 @@ public class PythonExecutor extends Application {
         try {
             int exitCode = process.waitFor();
             if (exitCode == 0) {
-                System.out.println("Script Python execute avec succes.");
-                System.out.println("Les fichiers generes se trouvent dans le repertoire de sortie : " + outputPath);
+                System.out.println("Les fichiers generes se trouvent dans le repertoire suivant : \n" + outputPath);
             } else {
             	throw new PythonExecutionException("Erreur lors de l'execution du script Python. Code de sortie : " + exitCode);
             }
