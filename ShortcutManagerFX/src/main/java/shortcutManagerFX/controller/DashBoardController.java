@@ -1,5 +1,6 @@
 package shortcutManagerFX.controller;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
@@ -40,6 +41,9 @@ public class DashBoardController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/ShortcutConfig.fxml"));
             Scene configScene = new Scene(loader.load());
+            
+            File cssFile = new File("src/main/resources/shortcutManagerFX/styles.css");
+            configScene.getStylesheets().add(cssFile.toURI().toString());
 
             ShortcutConfigController configController = loader.getController();
             configController.initialize(shortcutManager, (Stage) saveButton.getScene().getWindow());

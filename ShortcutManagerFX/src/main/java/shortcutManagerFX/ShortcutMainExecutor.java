@@ -1,5 +1,6 @@
 package shortcutManagerFX;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.application.Application;
@@ -18,6 +19,9 @@ public class ShortcutMainExecutor extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/DashBoard.fxml"));
             Scene mainScene = new Scene(loader.load());
+            
+            File cssFile = new File("src/main/resources/shortcutManagerFX/styles.css");
+            mainScene.getStylesheets().add(cssFile.toURI().toString());
 
             DashBoardController mainController = loader.getController();
             mainController.initialize(shortcutManager);
