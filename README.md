@@ -37,7 +37,7 @@ EmployeeManagementSystem
 ## Arborescence du Projet d'Exécution de Script Python
 
 ```
-PythonScript
+ExecutePythonScript
 ├───src
 │   ├───main
 │   │   ├───java

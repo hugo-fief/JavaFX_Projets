@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pythonScript</groupId>
-    <artifactId>PythonScript</artifactId>
+    <artifactId>ExecutePythonScript</artifactId>
     <version>1</version>
     <packaging>jar</packaging>
 
