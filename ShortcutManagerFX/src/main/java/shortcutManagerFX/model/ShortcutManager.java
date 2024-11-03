@@ -13,7 +13,7 @@ import java.util.Map;
 import shortcutManagerFX.util.ShortcutValidator;
 
 public class ShortcutManager {
-    // Chemin générique pour le fichier JSON dans le disque C:
+    // Chemin generique pour le fichier JSON dans le disque C:
     private static final String CONFIG_DIRECTORY = "C:\\TrapilAnalyse_Preferences";
     private static final String CONFIG_PATH = CONFIG_DIRECTORY + "\\shortcuts.json";
 
@@ -36,7 +36,7 @@ public class ShortcutManager {
 
     public void saveShortcuts() {
         try {
-            // Crée le dossier si nécessaire
+            // Cree le dossier si necessaire
             File directory = new File(CONFIG_DIRECTORY);
             if (!directory.exists()) {
                 directory.mkdirs();
@@ -69,7 +69,7 @@ public class ShortcutManager {
     }
 
     private void createDefaultConfig() {
-        // Raccourcis par défaut
+        // Raccourcis par defaut
         shortcuts.put("save", "Ctrl+S");
         shortcuts.put("open", "Ctrl+O");
         shortcuts.put("exit", "Ctrl+Q");

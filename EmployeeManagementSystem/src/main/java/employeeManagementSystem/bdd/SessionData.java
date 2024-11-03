@@ -9,7 +9,7 @@ public class SessionData {
     private String username;
     private String userRole;
 
-    // Constructeur privé pour le Singleton
+    // Constructeur prive pour le Singleton
     private SessionData() {}
 
     /**

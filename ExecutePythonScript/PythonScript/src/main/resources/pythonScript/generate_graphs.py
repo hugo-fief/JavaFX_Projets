@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def generate_graphs(excel_file, output_folder):
-    # Charger les données Excel
+    # Charger les donnees Excel
     data = pd.read_excel(excel_file)
 
     # Courbe de "Valeur_A" dans le temps
@@ -20,7 +20,7 @@ def generate_graphs(excel_file, output_folder):
     plt.figure(figsize=(8, 6))
     plt.hist(data['Valeur_A'], bins=15, alpha=0.7, color='blue')
     plt.xlabel("Valeur_A")
-    plt.ylabel("Fréquence")
+    plt.ylabel("Frequence")
     plt.title("Histogramme de Valeur_A")
     plt.savefig(f"{output_folder}/histogramme_valeur_a.png")
     plt.close()
@@ -29,12 +29,12 @@ def generate_graphs(excel_file, output_folder):
     plt.figure(figsize=(8, 6))
     plt.hist(data['Valeur_B'], bins=15, alpha=0.7, color='green')
     plt.xlabel("Valeur_B")
-    plt.ylabel("Fréquence")
+    plt.ylabel("Frequence")
     plt.title("Histogramme de Valeur_B")
     plt.savefig(f"{output_folder}/histogramme_valeur_b.png")
     plt.close()
 
-    print("Graphiques générés et enregistrés avec succès.")
+    print("Graphiques generes et enregistres avec succes.")
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

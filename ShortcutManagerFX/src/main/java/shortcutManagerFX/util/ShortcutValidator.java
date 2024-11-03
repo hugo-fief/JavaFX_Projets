@@ -10,7 +10,7 @@ public class ShortcutValidator {
         // Remplacer "Maj" par "Shift" dans la chaîne pour rendre le raccourci compatible
         String formattedShortcut = shortcut.replace("Maj", "Shift");
 
-        // Expression régulière pour des combinaisons telles que Ctrl+Alt+Shift+H
+        // Expression reguliere pour des combinaisons telles que Ctrl+Alt+Shift+H
         String regex = "^(Ctrl|Alt|Shift)(\\+(Ctrl|Alt|Shift))*\\+[A-Za-z0-9]$";
         return formattedShortcut.matches(regex);
     }
