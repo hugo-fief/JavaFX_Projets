@@ -8,68 +8,74 @@ import javafx.scene.input.KeyEvent;
 import shortcutManagerFX.model.ShortcutManager;
 import shortcutManagerFX.util.ShortcutValidator;
 
+/**
+ * Contrôleur pour la fenêtre de configuration des raccourcis.
+ * Permet à l'utilisateur de visualiser, modifier et valider les raccourcis clavier.
+ */
 public class ShortcutConfigController {
 
     @FXML
-    private TextField saveField;
+    private TextField saveField; // Champ pour configurer le raccourci "Save"
 
     @FXML
-    private TextField openField;
+    private TextField openField; // Champ pour configurer le raccourci "Open"
 
-    private ShortcutManager shortcutManager;
+    private ShortcutManager shortcutManager; // Gestionnaire des raccourcis
 
     /**
      * Initialise le contrôleur avec le gestionnaire de raccourcis.
+     * Cette méthode configure les champs de raccourcis avec les valeurs existantes et
+     * applique des gestionnaires spécifiques pour gérer la saisie utilisateur.
      *
-     * @param shortcutManager Le gestionnaire des raccourcis.
+     * @param shortcutManager Le gestionnaire des raccourcis, contenant les données actuelles.
      */
     public void initialize(ShortcutManager shortcutManager) {
         this.shortcutManager = shortcutManager;
 
-        // Initialiser les champs avec les raccourcis existants
+        // Remplir les champs avec les raccourcis actuels
         saveField.setText(shortcutManager.getShortcut("action1"));
         openField.setText(shortcutManager.getShortcut("action2"));
 
-        // Appliquer les gestionnaires spécifiques aux champs
+        // Appliquer un gestionnaire de saisie pour chaque champ
         initializeShortcutField(saveField);
         initializeShortcutField(openField);
     }
 
     /**
-     * Configure un champ de texte pour gérer les raccourcis avec :
-     * - La suppression du dernier segment (touche "Del").
-     * - L'ajout automatique de "+" et la conversion en majuscule.
-     * - Une validation stricte pour commencer par "Ctrl".
+     * Configure un champ de texte pour gérer les raccourcis avec les règles suivantes :
+     * - La suppression du dernier segment est déclenchée par "Backspace" ou "Delete".
+     * - Les touches saisies sont automatiquement converties en majuscules et préfixées par "+".
+     * - Le raccourci doit commencer par "Ctrl".
      *
      * @param shortcutField Le champ de texte à configurer.
      */
     private void initializeShortcutField(TextField shortcutField) {
         shortcutField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            String currentText = shortcutField.getText();
-            String keyText = event.getText().toUpperCase(); // Convertir en majuscule
+            String currentText = shortcutField.getText(); // Texte actuel dans le champ
+            String keyText = event.getText().toUpperCase(); // Texte de la touche en majuscule
 
             // Gestion des touches spéciales
             if (event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.DELETE) {
-                // Supprimer le dernier segment (jusqu'au dernier "+")
+                // Supprime le dernier segment du raccourci (jusqu'au dernier "+")
                 int lastPlusIndex = currentText.lastIndexOf("+");
                 if (lastPlusIndex != -1) {
                     shortcutField.setText(currentText.substring(0, lastPlusIndex));
                 } else {
-                    shortcutField.clear();
+                    shortcutField.clear(); // Efface tout si aucun "+" n'est trouvé
                 }
                 event.consume();
             } else if (keyText.equals("CTRL")) {
-                // Toujours commencer par "Ctrl" si le champ est vide
+                // Vérifie si "Ctrl" est présent et l'ajoute au début si le champ est vide
                 if (currentText.isEmpty()) {
                     shortcutField.setText("Ctrl");
                 }
                 event.consume();
             } else if (!currentText.isEmpty()) {
-                // Ajouter la touche saisie avec un "+" (si Ctrl est présent)
+                // Ajoute la touche saisie avec un "+" si "Ctrl" est déjà présent
                 shortcutField.setText(currentText + "+" + keyText);
                 event.consume();
             } else {
-                // Refuser la saisie si le champ est vide (Ctrl obligatoire)
+                // Si "Ctrl" n'est pas présent, la saisie est refusée
                 event.consume();
             }
         });
@@ -77,6 +83,7 @@ public class ShortcutConfigController {
 
     /**
      * Vide le champ "Save Shortcut".
+     * Cette méthode est appelée par le bouton "✕" associé à ce champ.
      */
     @FXML
     private void clearSaveField() {
@@ -85,6 +92,7 @@ public class ShortcutConfigController {
 
     /**
      * Vide le champ "Open Shortcut".
+     * Cette méthode est appelée par le bouton "✕" associé à ce champ.
      */
     @FXML
     private void clearOpenField() {
@@ -93,12 +101,12 @@ public class ShortcutConfigController {
 
     /**
      * Valide et sauvegarde les raccourcis saisis par l'utilisateur.
-     * Affiche une erreur si les raccourcis sont invalides.
+     * Si un raccourci est invalide, une boîte de dialogue d'erreur est affichée.
      */
     @FXML
     private void saveChanges() {
-        String saveShortcut = saveField.getText();
-        String openShortcut = openField.getText();
+        String saveShortcut = saveField.getText(); // Récupérer le raccourci "Save"
+        String openShortcut = openField.getText(); // Récupérer le raccourci "Open"
 
         // Validation des raccourcis
         if (!ShortcutValidator.isValidShortcut(saveShortcut)) {
@@ -110,9 +118,11 @@ public class ShortcutConfigController {
             return;
         }
 
-        // Mettre à jour et sauvegarder les raccourcis
+        // Mise à jour des raccourcis dans le gestionnaire
         shortcutManager.setShortcut("action1", saveShortcut);
         shortcutManager.setShortcut("action2", openShortcut);
+
+        // Sauvegarde des raccourcis dans le fichier de configuration
         shortcutManager.saveShortcuts();
 
         System.out.println("Raccourcis mis à jour avec succès !");
@@ -121,14 +131,14 @@ public class ShortcutConfigController {
     /**
      * Affiche une boîte de dialogue d'erreur avec un message spécifique.
      *
-     * @param title   Le titre de l'erreur.
-     * @param message Le message de l'erreur.
+     * @param title   Le titre de l'erreur affichée.
+     * @param message Le message détaillé de l'erreur.
      */
     private void showErrorAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setHeaderText(null); // Pas de sous-titre
+        alert.setContentText(message); // Message de l'erreur
         alert.showAndWait();
     }
 }

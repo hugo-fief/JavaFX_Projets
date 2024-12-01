@@ -1,33 +1,54 @@
 package shortcutManagerFX.util;
 
+/**
+ * Classe utilitaire pour valider les raccourcis clavier.
+ * Cette classe fournit des méthodes pour vérifier si un raccourci est valide
+ * selon des règles spécifiques et pour générer des messages d'erreur pertinents.
+ */
 public class ShortcutValidator {
 
     /**
-     * Vérifie si un raccourci est valide selon les règles spécifiées.
-     * Règles :
-     * 1. Le raccourci doit commencer par "Ctrl".
-     * 2. Le raccourci doit contenir 2 à 3 niveaux (exemple : Ctrl+A, Ctrl+Maj+A).
+     * Vérifie si un raccourci est valide selon les règles spécifiées :
+     * <ul>
+     *   <li>Le raccourci doit commencer par "Ctrl".</li>
+     *   <li>Le raccourci doit contenir entre 2 et 3 niveaux, séparés par "+".</li>
+     *   <li>Les niveaux suivants doivent être "Alt", "Maj" ou une lettre (ex. : A, B, Z).</li>
+     * </ul>
      *
-     * @param shortcut Le raccourci à valider.
-     * @return true si le raccourci est valide, false sinon.
+     * Exemples de raccourcis valides :
+     * <ul>
+     *   <li>Ctrl+A</li>
+     *   <li>Ctrl+Maj+A</li>
+     *   <li>Ctrl+Alt+O</li>
+     * </ul>
+     *
+     * @param shortcut Le raccourci à valider (sous forme de chaîne de caractères).
+     * @return {@code true} si le raccourci est valide, {@code false} sinon.
      */
     public static boolean isValidShortcut(String shortcut) {
         if (shortcut == null || shortcut.trim().isEmpty()) {
-            return false; // Raccourci vide ou null invalide
+            // Si le raccourci est vide ou null, il est considéré comme invalide
+            return false;
         }
 
-        // Règle : doit commencer par "Ctrl" et suivre un format valide avec 2 à 3 niveaux
+        // Expression régulière pour valider les raccourcis :
+        // - Doit commencer par "Ctrl".
+        // - Doit être suivi de 1 à 2 segments, séparés par "+".
+        // - Chaque segment doit être "Alt", "Maj", ou une lettre (A-Z).
         String regex = "^Ctrl(\\+(Alt|Maj|[A-Za-z])){1,2}$";
+
+        // Retourne true si le raccourci correspond au format spécifié par l'expression régulière
         return shortcut.matches(regex);
     }
 
     /**
-     * Message d'erreur à afficher si le raccourci est invalide.
-     * Le message inclut un exemple pour guider l'utilisateur.
+     * Génère un message d'erreur expliquant pourquoi un raccourci est invalide.
+     * Ce message est destiné à l'utilisateur et inclut des exemples de raccourcis valides.
      *
-     * @return Le message d'erreur.
+     * @return Une chaîne de caractères contenant le message d'erreur.
      */
     public static String getInvalidShortcutMessage() {
-        return "Raccourci invalide ! Un raccourci valide doit contenir 2 à 3 niveaux (exemples : 'Ctrl+A', 'Ctrl+Maj+A').";
+        return "Raccourci invalide ! Un raccourci valide doit contenir 2 à 3 niveaux. "
+             + "Exemples : 'Ctrl+A', 'Ctrl+Maj+A'.";
     }
 }

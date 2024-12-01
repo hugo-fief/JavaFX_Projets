@@ -10,37 +10,57 @@ import javafx.stage.Stage;
 import shortcutManagerFX.controller.DashBoardController;
 import shortcutManagerFX.model.ShortcutManager;
 
+/**
+ * Classe principale de l'application Shortcut Manager.
+ * Cette classe est responsable du lancement de l'application JavaFX,
+ * de l'initialisation des services nécessaires, et du chargement de la vue principale.
+ */
 public class ShortcutMainExecutor extends Application {
 
-    private ShortcutManager shortcutManager;
-    private ShortcutManagerService shortcutManagerService;
+    private ShortcutManager shortcutManager; // Gestionnaire des raccourcis
+    private ShortcutManagerService shortcutManagerService; // Service pour gérer les raccourcis globaux
 
+    /**
+     * Méthode principale appelée au démarrage de l'application JavaFX.
+     * Elle configure et affiche la fenêtre principale.
+     *
+     * @param primaryStage La fenêtre principale de l'application JavaFX.
+     */
     @Override
     public void start(Stage primaryStage) {
+        // Initialisation du gestionnaire des raccourcis et du service
         shortcutManager = new ShortcutManager();
         shortcutManagerService = new ShortcutManagerService();
 
         try {
-            // Charger le fichier FXML principal
+            // Charger le fichier FXML pour la vue principale
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/DashBoard.fxml"));
-            AnchorPane root = loader.load();
+            AnchorPane root = loader.load(); // Conteneur principal de la vue (AnchorPane)
 
-            // Récupérer le contrôleur et l'initialiser
+            // Récupérer le contrôleur associé au fichier FXML
             DashBoardController dashBoardController = loader.getController();
+
+            // Initialiser le contrôleur avec les dépendances
             dashBoardController.initialize(shortcutManager, shortcutManagerService, new Scene(root));
 
-            // Configurer la scène et la fenêtre principale
+            // Configurer et afficher la scène principale
             Scene mainScene = new Scene(root);
-            primaryStage.setTitle("Shortcut Manager");
-            primaryStage.setScene(mainScene);
-            primaryStage.show();
+            primaryStage.setTitle("Shortcut Manager"); // Définir le titre de la fenêtre
+            primaryStage.setScene(mainScene); // Attacher la scène à la fenêtre principale
+            primaryStage.show(); // Afficher la fenêtre principale
 
         } catch (IOException e) {
+            // Gérer les erreurs lors du chargement du fichier FXML
             e.printStackTrace();
         }
     }
 
+    /**
+     * Méthode principale pour lancer l'application.
+     *
+     * @param args Les arguments de la ligne de commande (non utilisés ici).
+     */
     public static void main(String[] args) {
-        launch(args); // Démarrer l'application JavaFX
+        launch(args); // Lance l'application JavaFX
     }
 }

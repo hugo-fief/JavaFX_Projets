@@ -1,56 +1,88 @@
-/* Style général de la fenêtre */
+/* 
+    Style général de la fenêtre principale. 
+    Applique un fond blanc à la fenêtre et un espacement interne (padding) pour éviter que les éléments collent aux bords.
+*/
 .root {
     -fx-background-color: #ffffff; /* Blanc pur */
-    -fx-padding: 20px;
+    -fx-padding: 20px; /* Espacement interne de 20 pixels */
 }
 
-/* Style des boutons */
+/* 
+    Style global pour tous les boutons.
+    Définit une apparence minimaliste et homogène avec un fond gris clair, une bordure fine et un texte noir.
+*/
 .button {
     -fx-background-color: #f0f0f0; /* Gris clair */
     -fx-text-fill: #000000; /* Texte noir */
-    -fx-font-size: 14px;
-    -fx-padding: 8px 15px;
+    -fx-font-size: 14px; /* Taille de police pour le texte des boutons */
+    -fx-padding: 8px 15px; /* Espacement interne pour rendre le bouton plus agréable */
     -fx-border-color: #d0d0d0; /* Bordure gris clair */
-    -fx-border-width: 1px;
-    -fx-border-radius: 4;
-    -fx-background-radius: 4;
+    -fx-border-width: 1px; /* Épaisseur de la bordure */
+    -fx-border-radius: 4; /* Bordure arrondie */
+    -fx-background-radius: 4; /* Coin arrondi pour le fond */
 }
 
+/* 
+    Effet visuel au survol des boutons.
+    Change légèrement la couleur de fond pour indiquer que le bouton est interactif.
+*/
 .button:hover {
     -fx-background-color: #e0e0e0; /* Gris légèrement plus foncé au survol */
 }
 
-/* Style des tableaux */
+/* 
+    Style des tableaux (TableView).
+    Ajoute une bordure grise avec des coins arrondis pour mieux délimiter le tableau.
+*/
 .table-view {
     -fx-border-color: #d0d0d0; /* Bordure gris clair */
-    -fx-border-radius: 4;
+    -fx-border-radius: 4; /* Coins arrondis pour le tableau */
 }
 
+/* 
+    Style des en-têtes des colonnes dans le tableau.
+    Donne un fond gris très clair et un texte noir pour une bonne lisibilité.
+*/
 .table-column-header {
     -fx-background-color: #f5f5f5; /* Gris très clair pour les en-têtes */
     -fx-text-fill: #000000; /* Texte noir */
-    -fx-font-size: 13px;
+    -fx-font-size: 13px; /* Taille de la police des en-têtes */
 }
 
+/* 
+    Style des cellules des lignes du tableau.
+    Ajoute une bordure interne pour délimiter chaque cellule et un fond blanc par défaut.
+*/
 .table-row-cell {
     -fx-border-color: #e0e0e0; /* Bordures internes grises */
-    -fx-padding: 10px;
+    -fx-padding: 10px; /* Espacement interne pour les données des cellules */
     -fx-background-color: #ffffff; /* Fond blanc */
 }
 
+/* 
+    Style pour les lignes impaires du tableau.
+    Applique un fond gris très léger pour alterner avec les lignes paires, améliorant ainsi la lisibilité.
+*/
 .table-row-cell:odd {
     -fx-background-color: #f9f9f9; /* Alternance avec gris très léger */
 }
 
-/* Style des champs de texte */
+/* 
+    Style global pour les champs de texte (TextField).
+    Ajoute une bordure grise claire et un fond blanc avec des coins arrondis.
+*/
 .text-field {
     -fx-background-color: #ffffff; /* Blanc pur */
     -fx-border-color: #d0d0d0; /* Bordure gris clair */
-    -fx-border-radius: 4;
-    -fx-background-radius: 4;
-    -fx-padding: 5px;
+    -fx-border-radius: 4; /* Coins arrondis */
+    -fx-background-radius: 4; /* Coins arrondis pour le fond */
+    -fx-padding: 5px; /* Espacement interne pour le texte */
 }
 
+/* 
+    Style des champs de texte lorsque le focus est actif.
+    La bordure devient légèrement plus foncée pour indiquer que l'utilisateur est en train de saisir quelque chose.
+*/
 .text-field:focused {
     -fx-border-color: #a0a0a0; /* Gris légèrement plus foncé au focus */
 }
