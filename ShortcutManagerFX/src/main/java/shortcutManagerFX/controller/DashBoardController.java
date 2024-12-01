@@ -1,5 +1,6 @@
 package shortcutManagerFX.controller;
 
+import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,11 +12,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import shortcutManagerFX.model.ShortcutManager;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import shortcutManagerFX.model.ShortcutManager;
 
 /**
  * Contrôleur principal pour l'interface des raccourcis.
@@ -33,7 +31,6 @@ public class DashBoardController {
     private TableColumn<ShortcutEntry, String> shortcutColumn; // Colonne pour les raccourcis
 
     private ShortcutManager shortcutManager; // Gestionnaire des raccourcis
-    private final Set<String> pressedKeys = new HashSet<>();
 
     /**
      * Initialise le contrôleur avec le gestionnaire des raccourcis.
@@ -50,50 +47,6 @@ public class DashBoardController {
 
         // Charger les raccourcis dans le tableau
         refreshTable();
-        
-        // Ajouter un écouteur global pour détecter les raccourcis
-        shortcutTable.setOnKeyPressed(event -> {
-            // Ajouter la touche actuelle au set
-            pressedKeys.add(event.getCode().getName());
-
-            // Construire la combinaison actuelle
-            String currentCombination = String.join("+", pressedKeys);
-
-            // Vérifier si cette combinaison correspond à un raccourci
-            shortcutManager.getAllShortcuts().forEach((action, shortcut) -> {
-                if (shortcut.equalsIgnoreCase(currentCombination)) {
-                    handleShortcutAction(action); // Appeler l'action associée
-                }
-            });
-        });
-
-        shortcutTable.setOnKeyReleased(event -> {
-            // Retirer la touche relâchée du set
-            pressedKeys.remove(event.getCode().getName());
-        });
-    }
-    
-    /**
-     * Exécute une action en fonction de son nom.
-     *
-     * @param action Le nom de l'action à exécuter (ex : "save", "open").
-     */
-    private void handleShortcutAction(String action) {
-        switch (action) {
-            case "save":
-                System.out.println("Action 'Save' exécutée !");
-                // Ajouter ici le code pour sauvegarder les données
-                break;
-
-            case "open":
-                System.out.println("Action 'Open' exécutée !");
-                // Ajouter ici le code pour ouvrir un fichier
-                break;
-
-            default:
-                System.out.println("Action inconnue : " + action);
-                break;
-        }
     }
 
     /**

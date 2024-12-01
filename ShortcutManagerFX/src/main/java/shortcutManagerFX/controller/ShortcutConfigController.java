@@ -1,5 +1,7 @@
 package shortcutManagerFX.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -8,11 +10,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import shortcutManagerFX.model.ShortcutManager;
 import shortcutManagerFX.util.ShortcutValidator;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Contrôleur pour la configuration des raccourcis.
