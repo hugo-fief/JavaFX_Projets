@@ -32,5 +32,5 @@
         Ce bouton est positionné sous le tableau et appelle une méthode dans le contrôleur 
         pour afficher une fenêtre modale de configuration.
     -->
-    <Button text="Configure Shortcuts" fx:id="configureButton" layoutX="325.0" layoutY="500.0" prefWidth="150.0"/>
+	<Button text="Configure Shortcuts" fx:id="configureButton" layoutX="325.0" layoutY="500.0" prefWidth="200.0" onAction="#openConfigWindow"/>
 </AnchorPane>

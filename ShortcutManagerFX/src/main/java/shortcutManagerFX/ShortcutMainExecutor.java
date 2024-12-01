@@ -39,7 +39,7 @@ public class ShortcutMainExecutor extends Application {
             
             // Configurer et afficher la scène principale
             Scene mainScene = new Scene(root);
-            primaryStage.setTitle("Shortcut Manager"); // Définir le titre de la fenêtre
+            primaryStage.setTitle("Interface de Gestion des Raccourcis"); // Définir le titre de la fenêtre
             primaryStage.setScene(mainScene); // Attacher la scène à la fenêtre principale
             
             // Récupérer le contrôleur associé au fichier FXML

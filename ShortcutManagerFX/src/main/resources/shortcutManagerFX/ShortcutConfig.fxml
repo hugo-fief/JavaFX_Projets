@@ -23,7 +23,7 @@
     -->
     <Label text="Save Shortcut:" layoutX="20.0" layoutY="30.0"/>
     <TextField fx:id="saveField" layoutX="150.0" layoutY="30.0" prefWidth="300.0"/>
-    <Button text="✕" layoutX="460.0" layoutY="30.0" onAction="#clearSaveField" prefWidth="30.0"/>
+    <Button text="X" layoutX="460.0" layoutY="30.0" onAction="#clearSaveField" prefWidth="30.0"/>
 
     <!-- 
         Section pour configurer le raccourci "Open":
@@ -33,7 +33,7 @@
     -->
     <Label text="Open Shortcut:" layoutX="20.0" layoutY="80.0"/>
     <TextField fx:id="openField" layoutX="150.0" layoutY="80.0" prefWidth="300.0"/>
-    <Button text="✕" layoutX="460.0" layoutY="80.0" onAction="#clearOpenField" prefWidth="30.0"/>
+    <Button text="X" layoutX="460.0" layoutY="80.0" onAction="#clearOpenField" prefWidth="30.0"/>
 
     <!-- 
         Bouton pour sauvegarder les modifications.
