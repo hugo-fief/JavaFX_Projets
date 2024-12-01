@@ -7,35 +7,30 @@ package shortcutManagerFX.util;
  */
 public class ShortcutValidator {
 
-    /**
-     * Vérifie si un raccourci est valide selon les règles spécifiées :
-     * <ul>
-     *   <li>Le raccourci doit commencer par "Ctrl".</li>
-     *   <li>Le raccourci doit contenir entre 2 et 3 niveaux, séparés par "+".</li>
-     *   <li>Les niveaux suivants doivent être "Alt", "Maj" ou une lettre (ex. : A, B, Z).</li>
-     * </ul>
+	/**
+     * Vérifie si un raccourci est valide selon les règles spécifiées.
+     * Règles :
+     * 1. Le raccourci doit commencer par "Ctrl".
+     * 2. Le raccourci doit contenir 2 à 3 niveaux (exemple : Ctrl+A, Ctrl+Maj+A).
+     * 3. Les flèches directionnelles sont autorisées.
      *
-     * Exemples de raccourcis valides :
-     * <ul>
-     *   <li>Ctrl+A</li>
-     *   <li>Ctrl+Maj+A</li>
-     *   <li>Ctrl+Alt+O</li>
-     * </ul>
-     *
-     * @param shortcut Le raccourci à valider (sous forme de chaîne de caractères).
-     * @return {@code true} si le raccourci est valide, {@code false} sinon.
+     * @param shortcut Le raccourci à valider.
+     * @return true si le raccourci est valide, false sinon.
      */
     public static boolean isValidShortcut(String shortcut) {
         if (shortcut == null || shortcut.trim().isEmpty()) {
             // Si le raccourci est vide ou null, il est considéré comme invalide
             return false;
         }
+        
+        // Liste des touches spéciales (flèches directionnelles incluses)
+        String specialKeys = "Left|Right|Up|Down";
 
         // Expression régulière pour valider les raccourcis :
         // - Doit commencer par "Ctrl".
         // - Doit être suivi de 1 à 2 segments, séparés par "+".
-        // - Chaque segment doit être "Alt", "Maj", ou une lettre (A-Z).
-        String regex = "^Ctrl(\\+(Alt|Maj|[A-Za-z])){1,2}$";
+        // - Chaque segment doit être "Alt", "Maj", ou une lettre (A-Z) ou une flèche (Droite-Gauche-Haut-Bas).
+        String regex = "^Ctrl(\\+(Alt|Maj|[A-Za-z]|" + specialKeys + ")){1,2}$";
 
         // Retourne true si le raccourci correspond au format spécifié par l'expression régulière
         return shortcut.matches(regex);
@@ -49,6 +44,6 @@ public class ShortcutValidator {
      */
     public static String getInvalidShortcutMessage() {
         return "Raccourci invalide ! Un raccourci valide doit avoir ce format : \n"
-             + "'Ctrl+A', 'Ctrl+Maj+A', 'Ctrl+Alt+A'.";
+             + "'Ctrl+A', 'Ctrl+Maj+A', 'Ctrl+Alt+A', 'Ctrl+Left'.";
     }
 }

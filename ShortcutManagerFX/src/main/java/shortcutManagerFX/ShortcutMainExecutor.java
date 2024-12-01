@@ -18,7 +18,6 @@ import shortcutManagerFX.model.ShortcutManager;
 public class ShortcutMainExecutor extends Application {
 
     private ShortcutManager shortcutManager; // Gestionnaire des raccourcis
-    private ShortcutManagerService shortcutManagerService; // Service pour gérer les raccourcis globaux
 
     /**
      * Méthode principale appelée au démarrage de l'application JavaFX.
@@ -30,7 +29,6 @@ public class ShortcutMainExecutor extends Application {
     public void start(Stage primaryStage) {
         // Initialisation du gestionnaire des raccourcis et du service
         shortcutManager = new ShortcutManager();
-        shortcutManagerService = new ShortcutManagerService();
 
         try {
             // Charger le fichier FXML pour la vue principale
@@ -46,7 +44,7 @@ public class ShortcutMainExecutor extends Application {
             DashBoardController dashBoardController = loader.getController();
             
             // Initialiser le contrôleur avec les dépendances et la scène principale
-            dashBoardController.initialize(shortcutManager, shortcutManagerService, mainScene);
+            dashBoardController.initialize(shortcutManager);
             
             primaryStage.show(); // Afficher la fenêtre principale
         } catch (IOException e) {

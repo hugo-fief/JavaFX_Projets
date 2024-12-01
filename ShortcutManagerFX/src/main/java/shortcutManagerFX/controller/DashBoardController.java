@@ -11,116 +11,154 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import shortcutManagerFX.ShortcutManagerService;
 import shortcutManagerFX.model.ShortcutManager;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Contrôleur pour le tableau de bord principal.
- * Gère l'affichage de la liste des raccourcis et l'ouverture de la fenêtre de configuration.
+ * Contrôleur principal pour l'interface des raccourcis.
+ * Gère l'affichage et les interactions avec la liste des raccourcis.
  */
 public class DashBoardController {
 
     @FXML
-    private TableView<ShortcutEntry> shortcutTable; // TableView pour afficher les raccourcis
+    private TableView<ShortcutEntry> shortcutTable; // Tableau affichant les raccourcis
 
     @FXML
-    private TableColumn<ShortcutEntry, String> actionColumn; // Colonne pour les noms des actions
+    private TableColumn<ShortcutEntry, String> actionColumn; // Colonne pour les actions
 
     @FXML
-    private TableColumn<ShortcutEntry, String> shortcutColumn; // Colonne pour les raccourcis associés
+    private TableColumn<ShortcutEntry, String> shortcutColumn; // Colonne pour les raccourcis
 
     private ShortcutManager shortcutManager; // Gestionnaire des raccourcis
-    private ShortcutManagerService shortcutManagerService; // Service de gestion des raccourcis globaux
+    private final Set<String> pressedKeys = new HashSet<>();
 
     /**
-     * Initialise le contrôleur avec les dépendances nécessaires.
-     * Configure la table des raccourcis et enregistre les raccourcis globaux.
+     * Initialise le contrôleur avec le gestionnaire des raccourcis.
+     * Charge les raccourcis dans le tableau.
      *
-     * @param shortcutManager         Le gestionnaire des raccourcis.
-     * @param shortcutManagerService  Le service pour enregistrer les raccourcis globaux.
-     * @param scene                   La scène associée à ce tableau de bord.
+     * @param shortcutManager Gestionnaire des raccourcis.
      */
-    public void initialize(ShortcutManager shortcutManager, ShortcutManagerService shortcutManagerService, Scene scene) {
+    public void initialize(ShortcutManager shortcutManager) {
         this.shortcutManager = shortcutManager;
-        this.shortcutManagerService = shortcutManagerService;
 
-        // Enregistrer les raccourcis globaux pour la scène actuelle
-        shortcutManagerService.registerGlobalShortcuts(scene);
-
-        // Configurer les colonnes de la TableView
+        // Configuration des colonnes du tableau
         actionColumn.setCellValueFactory(new PropertyValueFactory<>("action"));
         shortcutColumn.setCellValueFactory(new PropertyValueFactory<>("shortcut"));
 
-        // Charger les raccourcis dans la TableView
-        ObservableList<ShortcutEntry> shortcuts = FXCollections.observableArrayList();
-        for (String action : shortcutManager.getAllShortcuts().keySet()) {
-            shortcuts.add(new ShortcutEntry(action, shortcutManager.getShortcut(action)));
+        // Charger les raccourcis dans le tableau
+        refreshTable();
+        
+        // Ajouter un écouteur global pour détecter les raccourcis
+        shortcutTable.setOnKeyPressed(event -> {
+            // Ajouter la touche actuelle au set
+            pressedKeys.add(event.getCode().getName());
+
+            // Construire la combinaison actuelle
+            String currentCombination = String.join("+", pressedKeys);
+
+            // Vérifier si cette combinaison correspond à un raccourci
+            shortcutManager.getAllShortcuts().forEach((action, shortcut) -> {
+                if (shortcut.equalsIgnoreCase(currentCombination)) {
+                    handleShortcutAction(action); // Appeler l'action associée
+                }
+            });
+        });
+
+        shortcutTable.setOnKeyReleased(event -> {
+            // Retirer la touche relâchée du set
+            pressedKeys.remove(event.getCode().getName());
+        });
+    }
+    
+    /**
+     * Exécute une action en fonction de son nom.
+     *
+     * @param action Le nom de l'action à exécuter (ex : "save", "open").
+     */
+    private void handleShortcutAction(String action) {
+        switch (action) {
+            case "save":
+                System.out.println("Action 'Save' exécutée !");
+                // Ajouter ici le code pour sauvegarder les données
+                break;
+
+            case "open":
+                System.out.println("Action 'Open' exécutée !");
+                // Ajouter ici le code pour ouvrir un fichier
+                break;
+
+            default:
+                System.out.println("Action inconnue : " + action);
+                break;
         }
-        shortcutTable.setItems(shortcuts); // Attacher la liste des raccourcis à la table
     }
 
     /**
      * Ouvre la fenêtre de configuration des raccourcis.
-     * Cette fenêtre permet à l'utilisateur de modifier les raccourcis existants.
+     * Notifie le tableau principal pour actualiser les données après une modification.
      */
     @FXML
     private void openConfigWindow() {
         try {
-            // Charger le fichier FXML pour la fenêtre de configuration
+            // Charger l'interface de configuration
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/ShortcutConfig.fxml"));
             Parent root = loader.load();
 
-            // Récupérer le contrôleur et l'initialiser avec le ShortcutManager
+            // Récupérer le contrôleur associé
             ShortcutConfigController configController = loader.getController();
             configController.initialize(shortcutManager);
 
-            // Configurer la fenêtre modale pour la configuration des raccourcis
+            // Définir une action pour rafraîchir le tableau après modification
+            configController.setOnShortcutChangeListener(this::refreshTable);
+
+            // Configurer et afficher la fenêtre
             Stage stage = new Stage();
-            stage.setTitle("Configuration des raccourcis");
-            stage.initModality(Modality.APPLICATION_MODAL); // Bloquer l'accès à la fenêtre principale
+            stage.setTitle("Configure Shortcuts");
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
-            stage.showAndWait(); // Attendre la fermeture de cette fenêtre avant de continuer
+            stage.showAndWait(); // Attendre la fermeture de la fenêtre
+
         } catch (IOException e) {
-            // Gérer les erreurs liées au chargement du fichier FXML
             e.printStackTrace();
         }
     }
 
     /**
-     * Classe interne pour représenter une ligne dans la TableView des raccourcis.
-     * Chaque ligne contient une action et le raccourci qui lui est associé.
+     * Rafraîchit les données du tableau en rechargeant les raccourcis depuis le gestionnaire.
+     */
+    private void refreshTable() {
+        ObservableList<ShortcutEntry> shortcuts = FXCollections.observableArrayList();
+        for (String action : shortcutManager.getAllShortcuts().keySet()) {
+            shortcuts.add(new ShortcutEntry(action, shortcutManager.getShortcut(action)));
+        }
+        shortcutTable.setItems(shortcuts); // Mettre à jour les données affichées
+    }
+
+    /**
+     * Classe interne représentant une entrée dans le tableau des raccourcis.
      */
     public static class ShortcutEntry {
         private final String action; // Nom de l'action
         private final String shortcut; // Raccourci associé
 
         /**
-         * Constructeur pour créer une entrée de raccourci.
+         * Constructeur pour une entrée de raccourci.
          *
-         * @param action   Le nom de l'action.
-         * @param shortcut Le raccourci associé.
+         * @param action   Nom de l'action.
+         * @param shortcut Raccourci associé.
          */
         public ShortcutEntry(String action, String shortcut) {
             this.action = action;
             this.shortcut = shortcut;
         }
 
-        /**
-         * Récupère le nom de l'action.
-         *
-         * @return Le nom de l'action.
-         */
         public String getAction() {
             return action;
         }
 
-        /**
-         * Récupère le raccourci associé.
-         *
-         * @return Le raccourci associé.
-         */
         public String getShortcut() {
             return shortcut;
         }

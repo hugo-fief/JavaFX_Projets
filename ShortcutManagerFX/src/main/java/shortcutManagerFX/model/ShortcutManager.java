@@ -114,14 +114,18 @@ public class ShortcutManager {
     }
     
     /**
-     * Vérifie si un raccourci est déjà utilisé.
+     * Vérifie si un raccourci est déjà utilisé par une autre action.
      *
      * @param shortcut Le raccourci à vérifier.
-     * @param action   L'action pour laquelle on vérifie (l'action actuelle est exclue).
+     * @param action   L'action associée au raccourci.
      * @return true si le raccourci est déjà utilisé, false sinon.
      */
     public boolean isShortcutDuplicate(String shortcut, String action) {
-        return shortcuts.values().stream()
-                .anyMatch(existingShortcut -> existingShortcut.equals(shortcut) && !shortcuts.get(action).equals(shortcut));
+        for (Map.Entry<String, String> entry : shortcuts.entrySet()) {
+            if (entry.getValue().equals(shortcut) && !entry.getKey().equals(action)) {
+                return true; // Le raccourci est utilisé par une autre action
+            }
+        }
+        return false;
     }
 }
