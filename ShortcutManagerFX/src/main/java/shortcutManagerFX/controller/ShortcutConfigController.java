@@ -1,10 +1,10 @@
 package shortcutManagerFX.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import shortcutManagerFX.model.ShortcutManager;
 import shortcutManagerFX.util.ShortcutValidator;
 
@@ -29,33 +29,66 @@ public class ShortcutConfigController {
         // Initialiser les champs avec les raccourcis existants
         saveField.setText(shortcutManager.getShortcut("action1"));
         openField.setText(shortcutManager.getShortcut("action2"));
+
+        // Appliquer les gestionnaires spécifiques aux champs
+        initializeShortcutField(saveField);
+        initializeShortcutField(openField);
     }
 
     /**
-     * Méthode générique pour vider un champ de texte, basée sur l'identifiant de l'input.
+     * Configure un champ de texte pour gérer les raccourcis avec :
+     * - La suppression du dernier segment (touche "Del").
+     * - L'ajout automatique de "+" et la conversion en majuscule.
+     * - Une validation stricte pour commencer par "Ctrl".
      *
-     * @param event L'événement déclenché par le bouton.
+     * @param shortcutField Le champ de texte à configurer.
+     */
+    private void initializeShortcutField(TextField shortcutField) {
+        shortcutField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            String currentText = shortcutField.getText();
+            String keyText = event.getText().toUpperCase(); // Convertir en majuscule
+
+            // Gestion des touches spéciales
+            if (event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.DELETE) {
+                // Supprimer le dernier segment (jusqu'au dernier "+")
+                int lastPlusIndex = currentText.lastIndexOf("+");
+                if (lastPlusIndex != -1) {
+                    shortcutField.setText(currentText.substring(0, lastPlusIndex));
+                } else {
+                    shortcutField.clear();
+                }
+                event.consume();
+            } else if (keyText.equals("CTRL")) {
+                // Toujours commencer par "Ctrl" si le champ est vide
+                if (currentText.isEmpty()) {
+                    shortcutField.setText("Ctrl");
+                }
+                event.consume();
+            } else if (!currentText.isEmpty()) {
+                // Ajouter la touche saisie avec un "+" (si Ctrl est présent)
+                shortcutField.setText(currentText + "+" + keyText);
+                event.consume();
+            } else {
+                // Refuser la saisie si le champ est vide (Ctrl obligatoire)
+                event.consume();
+            }
+        });
+    }
+
+    /**
+     * Vide le champ "Save Shortcut".
      */
     @FXML
-    private void clearField(MouseEvent event) {
-        // Récupérer le bouton qui a déclenché l'action
-        Node source = (Node) event.getSource();
+    private void clearSaveField() {
+        saveField.clear();
+    }
 
-        // Lire le userData pour savoir quel input est concerné
-        String inputId = (String) source.getUserData();
-
-        // Trouver et vider le champ correspondant
-        switch (inputId) {
-            case "saveField":
-                saveField.clear();
-                break;
-            case "openField":
-                openField.clear();
-                break;
-            default:
-                System.err.println("Aucun champ correspondant pour l'identifiant : " + inputId);
-                break;
-        }
+    /**
+     * Vide le champ "Open Shortcut".
+     */
+    @FXML
+    private void clearOpenField() {
+        openField.clear();
     }
 
     /**
