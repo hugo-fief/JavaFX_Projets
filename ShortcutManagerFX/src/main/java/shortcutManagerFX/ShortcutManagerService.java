@@ -56,14 +56,13 @@ public class ShortcutManagerService {
      */
     private void handleShortcutAction(String action) {
         switch (action) {
-            case "action1":
+            case "save":
                 // Action 1 : Exemple d'opération
-                System.out.println("Action 1 déclenchée !");
+                System.out.println("Action save déclenchée !");
                 break;
 
-            case "action2":
-                // Action 2 : Exemple d'opération
-                System.out.println("Action 2 déclenchée !");
+            case "open":
+                System.out.println("Action open déclenchée !");
                 break;
 
             case "config":

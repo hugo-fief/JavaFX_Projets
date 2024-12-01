@@ -48,7 +48,7 @@ public class ShortcutValidator {
      * @return Une chaîne de caractères contenant le message d'erreur.
      */
     public static String getInvalidShortcutMessage() {
-        return "Raccourci invalide ! Un raccourci valide doit contenir 2 à 3 niveaux. "
-             + "Exemples : 'Ctrl+A', 'Ctrl+Maj+A'.";
+        return "Raccourci invalide ! Un raccourci valide doit avoir ce format : \n"
+             + "'Ctrl+A', 'Ctrl+Maj+A', 'Ctrl+Alt+A'.";
     }
 }

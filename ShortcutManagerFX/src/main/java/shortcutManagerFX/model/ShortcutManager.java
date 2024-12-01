@@ -97,9 +97,9 @@ public class ShortcutManager {
      * Les raccourcis par défaut sont définis et sauvegardés dans le fichier.
      */
     private void createDefaultConfig() {
-        shortcuts.put("action1", "Ctrl+S"); // Exemple : raccourci pour sauvegarder
-        shortcuts.put("action2", "Ctrl+O"); // Exemple : raccourci pour ouvrir
-        shortcuts.put("config", "Ctrl+H");  // Exemple : raccourci pour ouvrir la configuration
+        shortcuts.put("save", "Ctrl+S"); // Exemple : raccourci pour sauvegarder
+        shortcuts.put("open", "Ctrl+O"); // Exemple : raccourci pour ouvrir
+        shortcuts.put("config", "Ctrl+H"); // Exemple : raccourci pour ouvrir la configuration
         saveShortcuts(); // Sauvegarde immédiatement la configuration par défaut dans le fichier
     }
 
@@ -111,5 +111,17 @@ public class ShortcutManager {
      */
     public Map<String, String> getAllShortcuts() {
         return new LinkedHashMap<>(shortcuts); // Retourne une copie pour protéger l'original
+    }
+    
+    /**
+     * Vérifie si un raccourci est déjà utilisé.
+     *
+     * @param shortcut Le raccourci à vérifier.
+     * @param action   L'action pour laquelle on vérifie (l'action actuelle est exclue).
+     * @return true si le raccourci est déjà utilisé, false sinon.
+     */
+    public boolean isShortcutDuplicate(String shortcut, String action) {
+        return shortcuts.values().stream()
+                .anyMatch(existingShortcut -> existingShortcut.equals(shortcut) && !shortcuts.get(action).equals(shortcut));
     }
 }

@@ -33,8 +33,8 @@ public class ShortcutConfigController {
         this.shortcutManager = shortcutManager;
 
         // Remplir les champs avec les raccourcis actuels
-        saveField.setText(shortcutManager.getShortcut("action1"));
-        openField.setText(shortcutManager.getShortcut("action2"));
+        saveField.setText(shortcutManager.getShortcut("save"));
+        openField.setText(shortcutManager.getShortcut("open"));
 
         // Appliquer un gestionnaire de saisie pour chaque champ
         initializeShortcutField(saveField);
@@ -52,10 +52,10 @@ public class ShortcutConfigController {
     private void initializeShortcutField(TextField shortcutField) {
         shortcutField.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             String currentText = shortcutField.getText(); // Texte actuel dans le champ
-            String keyText = event.getText().toUpperCase(); // Texte de la touche en majuscule
+            KeyCode keyCode = event.getCode(); // Code de la touche pressée
 
             // Gestion des touches spéciales
-            if (event.getCode() == KeyCode.BACK_SPACE || event.getCode() == KeyCode.DELETE) {
+            if (keyCode == KeyCode.BACK_SPACE || keyCode == KeyCode.DELETE) {
                 // Supprime le dernier segment du raccourci (jusqu'au dernier "+")
                 int lastPlusIndex = currentText.lastIndexOf("+");
                 if (lastPlusIndex != -1) {
@@ -64,16 +64,32 @@ public class ShortcutConfigController {
                     shortcutField.clear(); // Efface tout si aucun "+" n'est trouvé
                 }
                 event.consume();
-            } else if (keyText.equals("CTRL")) {
+            } else if (keyCode == KeyCode.CONTROL) {
                 // Vérifie si "Ctrl" est présent et l'ajoute au début si le champ est vide
                 if (currentText.isEmpty()) {
                     shortcutField.setText("Ctrl");
                 }
                 event.consume();
-            } else if (!currentText.isEmpty()) {
-                // Ajoute la touche saisie avec un "+" si "Ctrl" est déjà présent
-                shortcutField.setText(currentText + "+" + keyText);
+            } else if (keyCode == KeyCode.ALT) {
+        		// Ajouter "Alt" si "Ctrl" est déjà présent
+                if (currentText.startsWith("Ctrl") && !currentText.contains("Alt")) {
+                    shortcutField.setText(currentText + "+Alt");
+                }
                 event.consume();
+            } else if (keyCode == KeyCode.SHIFT) {
+            	// Ajouter "Shift" si "Ctrl" est déjà présent
+                if (currentText.startsWith("Ctrl") && !currentText.contains("Shift")) {
+                    shortcutField.setText(currentText + "+Maj");
+                }
+                event.consume();
+            } else if (!currentText.isEmpty() && currentText.startsWith("Ctrl")) {
+            	// Ajouter une touche après "Ctrl" avec un "+"
+                String keyText = keyCode.getName().toUpperCase(); // Nom de la touche (ex. : "A", "SHIFT")
+            	
+                // Ajouter la touche saisie avec un "+" (si Ctrl est présent)
+                if (!keyText.equals("CTRL") && !keyText.equals("ALT") && !keyText.equals("SHIFT")) {
+                    shortcutField.setText(currentText + "+" + keyText);
+                }
             } else {
                 // Si "Ctrl" n'est pas présent, la saisie est refusée
                 event.consume();
@@ -83,7 +99,7 @@ public class ShortcutConfigController {
 
     /**
      * Vide le champ "Save Shortcut".
-     * Cette méthode est appelée par le bouton "✕" associé à ce champ.
+     * Cette méthode est appelée par le bouton "X" associé à ce champ.
      */
     @FXML
     private void clearSaveField() {
@@ -92,7 +108,7 @@ public class ShortcutConfigController {
 
     /**
      * Vide le champ "Open Shortcut".
-     * Cette méthode est appelée par le bouton "✕" associé à ce champ.
+     * Cette méthode est appelée par le bouton "X" associé à ce champ.
      */
     @FXML
     private void clearOpenField() {
@@ -117,10 +133,22 @@ public class ShortcutConfigController {
             showErrorAlert("Invalid Open Shortcut", ShortcutValidator.getInvalidShortcutMessage());
             return;
         }
+        
+        // Vérification des doublons avec la liste complète des raccourcis
+        if (shortcutManager.isShortcutDuplicate(saveShortcut, "save")) {
+            showErrorAlert("Duplicate Shortcut", "The shortcut '" + saveShortcut + "' is already assigned to another action.");
+            saveField.requestFocus();
+            return;
+        }
+        if (shortcutManager.isShortcutDuplicate(openShortcut, "open")) {
+            showErrorAlert("Duplicate Shortcut", "The shortcut '" + openShortcut + "' is already assigned to another action.");
+            openField.requestFocus();
+            return;
+        }
 
         // Mise à jour des raccourcis dans le gestionnaire
-        shortcutManager.setShortcut("action1", saveShortcut);
-        shortcutManager.setShortcut("action2", openShortcut);
+        shortcutManager.setShortcut("save", saveShortcut);
+        shortcutManager.setShortcut("open", openShortcut);
 
         // Sauvegarde des raccourcis dans le fichier de configuration
         shortcutManager.saveShortcuts();
