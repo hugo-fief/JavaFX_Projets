@@ -1,80 +1,84 @@
 package shortcutManagerFX.controller;
 
-import java.io.IOException;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import shortcutManagerFX.ShortcutManagerService;
 import shortcutManagerFX.model.ShortcutManager;
 
+import java.io.IOException;
+
 public class DashBoardController {
+
+    @FXML
+    private TableView<ShortcutEntry> shortcutTable;
+
+    @FXML
+    private TableColumn<ShortcutEntry, String> actionColumn;
+
+    @FXML
+    private TableColumn<ShortcutEntry, String> shortcutColumn;
+
     private ShortcutManager shortcutManager;
+    private ShortcutManagerService shortcutManagerService;
 
-    @FXML
-    private Button saveButton;
-    @FXML
-    private Button openButton;
-
-    public void initialize(ShortcutManager shortcutManager) {
+    public void initialize(ShortcutManager shortcutManager, ShortcutManagerService shortcutManagerService, Scene scene) {
         this.shortcutManager = shortcutManager;
-        refreshShortcuts();
+        this.shortcutManagerService = shortcutManagerService;
+        shortcutManagerService.registerGlobalShortcuts(scene);
 
-        // Configurer les raccourcis clavier
-        configureKeyboardShortcuts(saveButton.getScene());
-    }
+        actionColumn.setCellValueFactory(new PropertyValueFactory<>("action"));
+        shortcutColumn.setCellValueFactory(new PropertyValueFactory<>("shortcut"));
 
-    @FXML
-    private void performSaveAction() {
-        System.out.println("Save action triggered!");
-    }
-
-    @FXML
-    private void performOpenAction() {
-        System.out.println("Open action triggered!");
+        ObservableList<ShortcutEntry> shortcuts = FXCollections.observableArrayList();
+        for (String action : shortcutManager.getAllShortcuts().keySet()) {
+            shortcuts.add(new ShortcutEntry(action, shortcutManager.getShortcut(action)));
+        }
+        shortcutTable.setItems(shortcuts);
     }
 
     @FXML
     private void openConfigWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/ShortcutConfig.fxml"));
-            Scene configScene = new Scene(loader.load());
+            Parent root = loader.load();
 
-            // Initialiser le contrôleur de configuration avec le gestionnaire de raccourcis et la fenêtre principale
             ShortcutConfigController configController = loader.getController();
-            configController.initialize(shortcutManager, (Stage) saveButton.getScene().getWindow());
+            configController.initialize(shortcutManager);
 
-            Stage stage = (Stage) saveButton.getScene().getWindow();
-            stage.setScene(configScene);  // Remplacer la scène principale par celle de configuration
+            Stage stage = new Stage();
+            stage.setTitle("Configuration des raccourcis");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void refreshShortcuts() {
-        saveButton.setText("Save (Shortcut: " + shortcutManager.getShortcut("save") + ")");
-        openButton.setText("Open (Shortcut: " + shortcutManager.getShortcut("open") + ")");
-    }
+    public static class ShortcutEntry {
+        private final String action;
+        private final String shortcut;
 
-    private void configureKeyboardShortcuts(Scene scene) {
-        // Ajouter un écouteur pour les raccourcis clavier
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (isShortcutPressed(event, shortcutManager.getShortcut("save"))) {
-                performSaveAction();
-            } else if (isShortcutPressed(event, shortcutManager.getShortcut("open"))) {
-                performOpenAction();
-            } else if (isShortcutPressed(event, shortcutManager.getShortcut("config"))) {
-                openConfigWindow();
-            }
-        });
-    }
+        public ShortcutEntry(String action, String shortcut) {
+            this.action = action;
+            this.shortcut = shortcut;
+        }
 
-    private boolean isShortcutPressed(KeyEvent event, String shortcut) {
-        KeyCombination keyCombination = KeyCombination.keyCombination(shortcut.replace("Maj", "Shift"));
-        return keyCombination.match(event);
+        public String getAction() {
+            return action;
+        }
+
+        public String getShortcut() {
+            return shortcut;
+        }
     }
 }
