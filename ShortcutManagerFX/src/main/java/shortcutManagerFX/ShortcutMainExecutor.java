@@ -36,19 +36,19 @@ public class ShortcutMainExecutor extends Application {
             // Charger le fichier FXML pour la vue principale
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/shortcutManagerFX/DashBoard.fxml"));
             AnchorPane root = loader.load(); // Conteneur principal de la vue (AnchorPane)
-
-            // Récupérer le contrôleur associé au fichier FXML
-            DashBoardController dashBoardController = loader.getController();
-
-            // Initialiser le contrôleur avec les dépendances
-            dashBoardController.initialize(shortcutManager, shortcutManagerService, new Scene(root));
-
+            
             // Configurer et afficher la scène principale
             Scene mainScene = new Scene(root);
             primaryStage.setTitle("Shortcut Manager"); // Définir le titre de la fenêtre
             primaryStage.setScene(mainScene); // Attacher la scène à la fenêtre principale
+            
+            // Récupérer le contrôleur associé au fichier FXML
+            DashBoardController dashBoardController = loader.getController();
+            
+            // Initialiser le contrôleur avec les dépendances et la scène principale
+            dashBoardController.initialize(shortcutManager, shortcutManagerService, mainScene);
+            
             primaryStage.show(); // Afficher la fenêtre principale
-
         } catch (IOException e) {
             // Gérer les erreurs lors du chargement du fichier FXML
             e.printStackTrace();
