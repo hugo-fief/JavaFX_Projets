@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import shortcutManagerFX.model.ShortcutManager;
@@ -39,6 +40,9 @@ public class ShortcutConfigController {
         shortcutManager.getAllShortcuts().forEach((action, shortcut) -> {
             HBox shortcutRow = new HBox(10); // Conteneur pour chaque ligne
             TextField shortcutField = new TextField(shortcut); // Champ de texte pour le raccourci
+            shortcutField.setPromptText("Tapez le raccourci ici..."); // Placeholder pour le champ
+            HBox.setHgrow(shortcutField, Priority.ALWAYS); // Permet au TextField de s'étendre
+            
             shortcutFields.put(action, shortcutField); // Associer le champ à l'action
 
             // Bouton pour vider le champ
