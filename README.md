@@ -6,14 +6,12 @@
 
 ## Projet d'Exécution Script Python
 
-- Ce projet a été développé afin de pouvoir exécuter un script python depuis un programme Java, en mettant en place des
-bonnes pratiques de Développement, tout en respectant un certains nombres de specifications fonctionnelles, ayant pour but
-d'assurer la protection envers de potentiels failles de sécurités
-- Chemin a spécifié pour exécuter le script python : ```python generate_graphs.py data.xlsx output```
+- Ce projet a été développé afin de pouvoir exécuter un script python depuis un programme Java
+- Commande pour exécuter le script python sans passer par le programme Java : ```python generate_graphs.py data.xlsx output```.
 
 ## Projet de Gestion des Raccourcis
 
-- Ce projet a été développé afin de pouvoir définir des raccourcis paramétrable depuis un programme Java, en mettant en place des bonnes pratiques de Développement, tout en respectant un certains nombres de specifications fonctionnelles, ayant pour but d'assurer la protection envers de potentiels failles de sécurités
+- Ce projet a été développé afin de pouvoir définir des raccourcis paramétrable depuis un programme Java.
 
 ## Arborescence du Projet de Gestion d'Employés
 
