@@ -16,10 +16,6 @@ public class ShortcutHelpWindow {
 
     // Singleton pour éviter d’ouvrir plusieurs fois la même fenêtre
     private static Stage activeStage = null;
-    
-    public static void showTest() {
-    	System.out.println("Test 1");
-    }
 
     /**
      * Méthode à appeler quand l'utilisateur fait "Ctrl + H"
