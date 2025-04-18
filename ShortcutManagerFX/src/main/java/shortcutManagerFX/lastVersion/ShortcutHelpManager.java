@@ -18,6 +18,27 @@ public final class ShortcutHelpManager {
         });
     }
 
+    /*public static void install() {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+            private boolean ctrlPressed = false;
+
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent e) {
+                if (e.getID() == KeyEvent.KEY_PRESSED) {
+                    if (e.getKeyCode() == KeyEvent.VK_CONTROL) {
+                        ctrlPressed = true;
+                    } else if (ctrlPressed && e.getKeyCode() == KeyEvent.VK_H) {
+                        Platform.runLater(() -> ShortcutHelpWindow.show());
+                        return true;
+                    }
+                } else if (e.getID() == KeyEvent.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_CONTROL) {
+                    ctrlPressed = false;
+                }
+                return false;
+            }
+        });
+    }*/
+
     private ShortcutHelpManager() {
         // static only
     }
