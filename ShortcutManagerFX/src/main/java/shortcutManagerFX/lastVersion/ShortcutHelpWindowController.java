@@ -27,11 +27,10 @@ public class ShortcutHelpWindowController {
     private TableColumn<ShortcutEntry, String> columnAction;
 
     @FXML
-    public void initialize() {
+    public void initialize() {    	
         setupTableColumns();         // Configure les colonnes
         fillShortcuts();            // Remplit les raccourcis
         applyRowStyling();          // Gère l'alternance des lignes + hover
-        applyFocusAndAnimations();  // Applique les animations d'affichage
     }
 
     // Association des champs du modèle à chaque colonne
@@ -42,6 +41,9 @@ public class ShortcutHelpWindowController {
 
     // Liste des raccourcis clavier à afficher dans le tableau
     private void fillShortcuts() {
+    	// On masque la scrollbar horizontal
+    	shortcutTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         ObservableList<ShortcutEntry> shortcuts = FXCollections.observableArrayList(
           new ShortcutEntry("Ctrl + H", "Afficher cette fenêtre"),
           new ShortcutEntry("Echap", "Fermer cette fenêtre"),
@@ -50,7 +52,7 @@ public class ShortcutHelpWindowController {
           new ShortcutEntry("Ctrl + D", "Supprimer une indication"),
           new ShortcutEntry("Ctrl + L", "Verrouiller une indication"),
           new ShortcutEntry("Ctrl + G", "Recalage PA")
-        );
+      );
         
         shortcutTable.setItems(shortcuts);
     }
@@ -69,12 +71,11 @@ public class ShortcutHelpWindowController {
                     } else {
                         int index = getIndex();
                         String baseColor = (index % 2 == 0) ? "#ffffff" : "#f9f9f9";
-                        setStyle("-fx-background-color: " + baseColor + ";");
+                        setStyle("-fx-background-color: " + baseColor + "; -fx-border-color: #e0e0e0; -fx-border-width: 0 0 1 0;");
                     }
                 }
             };
-
-            // Effet de survol (hover)
+            
             row.hoverProperty().addListener((obs, oldVal, isHovered) -> {
                 if (isHovered && !row.isEmpty()) {
                     row.setStyle("-fx-background-color: #f0f0f0;");
@@ -86,42 +87,6 @@ public class ShortcutHelpWindowController {
             });
 
             return row;
-        });
-    }
-
-    // Applique :
-    //    - le focus automatique sur la 1ère ligne
-    //    - le slide-in vertical progressif
-    //    - la pulsation douce sur la 1ère ligne
-    private void applyFocusAndAnimations() {
-        Platform.runLater(() -> {
-            shortcutTable.scrollTo(0);
-            shortcutTable.getSelectionModel().selectFirst();
-
-            // Animation d'apparition en slide-in
-            for (int i = 0; i < shortcutTable.getItems().size(); i++) {
-                Node row = shortcutTable.lookup(".table-row-cell:nth-child(" + (i + 1) + ")");
-                if (row != null) {
-                    TranslateTransition tt = new TranslateTransition(Duration.millis(300), row);
-                    tt.setFromY(20);
-                    tt.setToY(0);
-                    tt.setDelay(Duration.millis(i * 50)); // décalage progressif
-                    tt.play();
-                }
-            }
-
-            // Pulsation légère de la 1ère ligne
-            Node firstRow = shortcutTable.lookup(".table-row-cell");
-            if (firstRow != null) {
-                ScaleTransition pulse = new ScaleTransition(Duration.millis(400), firstRow);
-                pulse.setFromX(1);
-                pulse.setToX(1.02);
-                pulse.setFromY(1);
-                pulse.setToY(1.02);
-                pulse.setCycleCount(2);
-                pulse.setAutoReverse(true);
-                pulse.play();
-            }
         });
     }
 

@@ -15,17 +15,18 @@
                layoutX="20" layoutY="20"
                prefWidth="760" prefHeight="360"
                style="
-                   -fx-border-color: #d0d0d0;
-                   -fx-border-radius: 4;
-                   -fx-background-color: #ffffff;
-                   -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);
-                   -fx-cell-size: 28px;">
+               		-fx-padding: 0;
+               		-fx-background-insets: 0; 
+               		-fx-border-insets: 0; 
+               		-fx-background-color: #ffffff; 
+               		-fx-control-inner-background: #ffffff; 
+               		-fx-focus-color: transparent;
+               		-fx-faint-focus-color: transparent;">
         <columns>
             <TableColumn fx:id="columnKey"
                          text="Raccourci"
                          prefWidth="380"
                          style="
-                             -fx-background-color: #f5f5f5;
                              -fx-text-fill: #000000;
                              -fx-font-size: 13px;
                              -fx-font-family: 'Segoe UI';
@@ -35,7 +36,6 @@
                          text="Action"
                          prefWidth="380"
                          style="
-                             -fx-background-color: #f5f5f5;
                              -fx-text-fill: #000000;
                              -fx-font-size: 13px;
                              -fx-font-family: 'Segoe UI';
